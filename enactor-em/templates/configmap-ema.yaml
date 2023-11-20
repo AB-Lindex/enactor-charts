@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-{{ include "ema.name" . }}
+  labels:
+    {{- include "ema.labels" . | nindent 4 }}
+data:
+#  ENACTOR_JMX_APPLICATIONID: "AppServer"
+  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: {{ include "emp.name" . }}
+  ENACTOR_TOMCAT_HTTP_DISABLED: "true"
+  JXMX: "768m"

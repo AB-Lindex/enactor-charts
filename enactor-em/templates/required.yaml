@@ -1,0 +1,2 @@
+{{- $_ := required ".Values.storage.storageClass is required." .Values.storage.storageClass -}}
+{{- $_ := required ".Values.mariadb.primary.persistence.storageClass is required." .Values.mariadb.primary.persistence.storageClass -}}

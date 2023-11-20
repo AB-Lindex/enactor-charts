@@ -1,0 +1,131 @@
+{{ $image := printf "%s/%s" .Values.image.repository .Values.image.ems | clean }}
+{{ $name := include "ems.name" . }}
+{{ $dependency := dict "dependsOn" .Values.global.dependsOn "service" "emp" "port" 39832 }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "ems.name" . }}
+  labels:
+    {{- include "ems.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "ems.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "ems.name" . }}
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      annotations:
+        checksum/common: {{ include (print $.Template.BasePath "/configmap-common.yaml") . | sha256sum }}
+        checksum/ems: {{ include (print $.Template.BasePath "/configmap-ems.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "ems.selectorLabels" . | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ems.name" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: 300
+
+      # volumes:
+      #   - name: app-home
+      #     emptyDir: {}
+
+      initContainers:
+        {{ include "dependsOn" $dependency | nindent 8 }}
+
+      containers:
+        - name: ems
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ $image }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{ include "db.env" . | nindent 12 }}
+
+            - name: ENACTOR_JMX_SERVERHOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+                  
+            - name: ENACTOR_RMI_SERVERHOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+
+            - name: ENACTOR_JMX_APPLICATIONID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+                
+          envFrom:
+            - configMapRef:
+                name: config-common
+            - configMapRef:
+                name: config-{{ include "ems.name" . }}
+          ports:
+            - name: http
+              containerPort: 39833
+              protocol: TCP
+            - name: https
+              containerPort: 52243
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /axis2/
+              port: https
+              scheme: HTTPS
+          readinessProbe:
+            httpGet:
+              path: /axis2/
+              port: https
+              scheme: HTTPS
+          startupProbe:
+            httpGet:
+              path: /axis2/
+              port: https
+              scheme: HTTPS
+            periodSeconds: 20
+            failureThreshold: 10
+            initialDelaySeconds: 20
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          volumeMounts:
+            - name: apphome
+              mountPath: /enactor/app/home
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: apphome
+        annotations:
+          volume.beta.kubernetes.io/storage-class: {{ .Values.storage.storageClass }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+

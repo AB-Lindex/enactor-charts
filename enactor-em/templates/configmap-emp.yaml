@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-{{ include "emp.name" . }}
+  labels:
+    {{- include "ema.labels" . | nindent 4 }}
+data:
+  ENACTOR_BROADCAST_DEFAULTDOWNLOADSERVERHOSTNAME: http://lxconstore24.lindex.to/
+  ENACTOR_BROADCAST_DEFAULTDOWNLOADURL: http://lxconstore24.lindex.to:39832/WebCore/FileDownloadServlet
+#  ENACTOR_JMX_APPLICATIONID: ProcServer
+  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: localhost
+  ENACTOR_TOMCAT_HTTP_DISABLED: "false"
+#  ENACTOR_TOMCAT_HTTP_DISABLED: "true" -- testing with "false" to see if http-302 gets resolved
+  JXMX: "768m"

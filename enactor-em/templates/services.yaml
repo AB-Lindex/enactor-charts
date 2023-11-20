@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ema.name" . }}
+  labels:
+    {{- include "ema.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- include "service.ports" .Values.network.ema | nindent 4 }}
+  selector:
+    {{- include "ema.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "emp.name" . }}
+  labels:
+    {{- include "emp.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- include "service.ports" .Values.network.emp | nindent 4 }}
+  selector:
+    {{- include "emp.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ems.name" . }}
+  labels:
+    {{- include "ems.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- include "service.ports" .Values.network.ems | nindent 4 }}
+  selector:
+    {{- include "ems.selectorLabels" . | nindent 4 }}
+

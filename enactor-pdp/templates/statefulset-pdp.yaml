@@ -1,0 +1,100 @@
+{{ if .Values.pdp.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.pdp.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "pdp.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+      {{- include "pdp.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "pdp.serviceAccountName" . }}
+      imagePullSecrets:
+        - name: crsdcshared
+
+      enableServiceLinks: false
+
+      # securityContext:
+      #     runAsUser: 1100
+      #     runAsGroup: 1100
+      #     fsGroup: 1100
+
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames:
+            - "localhost"
+            - "{{ .Values.pdp.name }}"
+
+      initContainers:
+        - name: verifydb
+          image: busybox:1.31
+          command: 
+            - 'sh'
+            - '-c'
+            - |-
+              echo -e "Checking for the availability of MySQL Server deployment '$SERVERNAME'";
+              while ! nc -z $SERVERNAME 3306;
+                do sleep 2;
+                printf "-";
+              done;
+              echo -e "  >> MySQL DB Server '$SERVERNAME' has started";
+          env:
+            - name: SERVERNAME
+              value: {{ template "dbserver" . }}
+
+      containers:
+        - name: pdp
+          image: {{ .Values.pdp.image.repository }}:{{ .Values.pdp.image.tag | default  "latest" }}
+          imagePullPolicy: {{ .Values.pdp.image.pullPolicy  }}
+          ports:
+            - containerPort: 39901
+              name: pdp-http
+            - containerPort: 53311
+              name: pdp-https
+            - containerPort: 39847
+              name: jmx
+            - containerPort: 39848
+              name: pdp-jmx
+          env:
+            {{ template "env.defaults" . }}
+            {{ template "env.pdp" . }}
+          envFrom:
+            - configMapRef:
+                name: config-{{ .Values.pdp.name }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: /WebMaintenance/
+          #     port: 39830
+          volumeMounts:
+            - name: pdp-home
+              mountPath: /enactor/app/home
+            # - name: keystore
+            #   mountPath: /enactor/app/custom/keys
+            # - name: enactor-config
+            #   mountPath: /enactor/app/config/enactor.xml
+            #   subPath: enactor.xml
+
+      volumes:
+      #   - name: keystore
+      #     secret:
+      #       secretName: {{ .Release.Name }}-keystore
+        # - name: enactor-config
+        #   configMap:
+        #     name: {{ .Release.Name }}-enactor-config
+      
+  volumeClaimTemplates:
+    - metadata:
+        name: pdp-home
+      spec:
+        storageClassName: {{ .Values.pdp.persistence.storageClass }}
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.pdp.persistence.size }}
+{{ end }}
