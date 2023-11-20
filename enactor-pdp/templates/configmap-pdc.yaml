@@ -14,7 +14,7 @@ data:
   # ENACTOR_ACTIVEMQ_ENDPOINT: tcp:\/\/activemq:61616
   # ENACTOR_APPLICATION: /enactor
   # ENACTOR_AUTH_ALLOWED_CLIENT_IDS: client
-  # ENACTOR_AXIS2_PASSWORD: SwC92FawnBWCYPWV
+  # ENACTOR_AXIS2_PASSWORD: REDACTED
   # ENACTOR_AXIS2_URL: {{ include "ems.https" . }}/axis2
   # ENACTOR_AXIS2_USER: admin
   # ENACTOR_BPEL_RUNTIMEURL: http://lxconstore21.lindex.to:39832/WebCore

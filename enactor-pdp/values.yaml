@@ -14,6 +14,18 @@ estate:
   ema: http://ema.backend
   emp: http://emp.backend
   ems: http://ems.backend
+  jmx: 
+    name: ems.backend
+    port: 39847
+
+truststore:
+  certSecret: truststore
+  pwdSecret: truststore-pwd
+
+java:
+  country: SE
+  language: en
+  timezone: Europe/Stockholm
 
 pdp:
   name: pdp
@@ -37,11 +49,11 @@ pdc:
     storageClass: ""
     size: "10Gi"
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+# image:
+#   repository: nginx
+#   pullPolicy: IfNotPresent
+#   # Overrides the image tag whose default is the chart appVersion.
+#   tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -121,7 +133,7 @@ mariadb:
   auth:
     database: "enactorpdp"
     username: "enactor"
-    existingSecret: em-secrets
+    existingSecret: db-secrets
   primary:
     persistence:
       size: "25Gi"

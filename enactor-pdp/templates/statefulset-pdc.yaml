@@ -31,23 +31,6 @@ spec:
             - "localhost"
             - "{{ .Values.pdc.name }}"
 
-      initContainers:
-        - name: verifydb
-          image: busybox:1.31
-          command: 
-            - 'sh'
-            - '-c'
-            - |-
-              echo -e "Checking for the availability of MySQL Server deployment '$SERVERNAME'";
-              while ! nc -z $SERVERNAME 3306;
-                do sleep 2;
-                printf "-";
-              done;
-              echo -e "  >> MySQL DB Server '$SERVERNAME' has started";
-          env:
-            - name: SERVERNAME
-              value: {{ template "dbserver" . }}
-
       containers:
         - name: pdc
           image: {{ .Values.pdc.image.repository }}:{{ .Values.pdc.image.tag | default  "latest" }}
@@ -65,8 +48,8 @@ spec:
             {{ template "env.defaults" . }}
             {{ template "env.pdc" . }}
           envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}-common
+            # - configMapRef:
+            #     name: {{ .Release.Name }}-common
             - configMapRef:
                 name: {{ .Release.Name }}-pdc
           # readinessProbe:

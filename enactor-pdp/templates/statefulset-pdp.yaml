@@ -67,20 +67,28 @@ spec:
           envFrom:
             - configMapRef:
                 name: config-{{ .Values.pdp.name }}
+
+            - secretRef:
+                name: secret-common
+                
           # readinessProbe:
           #   httpGet:
           #     path: /WebMaintenance/
           #     port: 39830
+
           volumeMounts:
             - name: pdp-home
               mountPath: /enactor/app/home
-            # - name: keystore
-            #   mountPath: /enactor/app/custom/keys
+            - name: truststore
+              mountPath: /enactor/app/custom/trust
             # - name: enactor-config
             #   mountPath: /enactor/app/config/enactor.xml
             #   subPath: enactor.xml
 
       volumes:
+        - name: truststore
+          secret:
+            secretName: {{ .Values.truststore.certSecret }}
       #   - name: keystore
       #     secret:
       #       secretName: {{ .Release.Name }}-keystore

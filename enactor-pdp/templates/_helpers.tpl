@@ -40,7 +40,11 @@ https://lxconstore21.lindex.to:52243
 {{- end }}
 
 {{- define "dbserver" -}}
-{{ .Release.Name }}-mariadb.{{ .Release.Namespace }}
+{{ .Values.mariadb.fullnameOverride }}
+{{- end }}
+
+{{- define "mariadb.jdbc" -}}
+"jdbc:mysql:\\/\\/{{ include "dbserver" . }}:3306\\/{{ .Values.mariadb.auth.database }}?useSSL=false"
 {{- end }}
 
 {{- define "env.defaults" -}}
@@ -50,4 +54,8 @@ https://lxconstore21.lindex.to:52243
 {{- end }}
 
 {{- define "env.pdc" -}}
+{{- end }}
+
+{{- define "deviceid" -}}
+pdpServer@{{ .Values.store.id }}.Enactor
 {{- end }}
