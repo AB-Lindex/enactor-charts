@@ -17,8 +17,12 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap-pdc.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ include "pdc.serviceAccountName" . }}
+      {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-        - name: crsdcshared
+      {{- range $name := .Values.imagePullSecrets }}
+        - name: {{ $name }}
+      {{- end }}
+      {{- end }}
 
       enableServiceLinks: false
 

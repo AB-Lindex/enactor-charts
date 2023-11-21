@@ -17,6 +17,9 @@ estate:
   jmx: 
     name: ems.backend
     port: 39847
+  tms:
+    name: ems.backend
+    port: 39888
 
 truststore:
   certSecret: truststore

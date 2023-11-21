@@ -44,7 +44,11 @@ https://lxconstore21.lindex.to:52243
 {{- end }}
 
 {{- define "mariadb.jdbc" -}}
-"jdbc:mysql:\\/\\/{{ include "dbserver" . }}:3306\\/{{ .Values.mariadb.auth.database }}?useSSL=false"
+jdbc:mysql://{{ include "dbserver" . }}:3306/{{ .Values.mariadb.auth.database }}?useSSL=false
+{{- end }}
+
+{{- define "mariadb.jdbc.quotes" -}}
+jdbc:mysql:\/\/{{ include "dbserver" . }}:3306\/{{ .Values.mariadb.auth.database }}?useSSL=false
 {{- end }}
 
 {{- define "env.defaults" -}}
