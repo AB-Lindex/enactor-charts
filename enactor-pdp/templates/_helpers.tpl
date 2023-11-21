@@ -51,6 +51,11 @@ https://lxconstore21.lindex.to:52243
 {{- end }}
 
 {{- define "env.pdp" -}}
+- name: ENACTOR_DB_PASS
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.mariadb.auth.existingSecret }}
+      key: mariadb-password
 {{- end }}
 
 {{- define "env.pdc" -}}

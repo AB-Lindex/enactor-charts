@@ -12,7 +12,9 @@ spec:
   template:
     metadata:
       labels:
-      {{- include "pdp.selectorLabels" . | nindent 8 }}
+        {{- include "pdp.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-pdp.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ include "pdp.serviceAccountName" . }}
       imagePullSecrets:
@@ -62,8 +64,8 @@ spec:
             - containerPort: 39848
               name: pdp-jmx
           env:
-            {{ template "env.defaults" . }}
-            {{ template "env.pdp" . }}
+            {{- include "env.defaults" . | nindent 12 }}
+            {{- include "env.pdp" . | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: config-{{ .Values.pdp.name }}

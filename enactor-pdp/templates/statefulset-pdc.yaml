@@ -12,7 +12,9 @@ spec:
   template:
     metadata:
       labels:
-      {{- include "pdc.selectorLabels" . | nindent 8 }}
+        {{- include "pdc.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-pdc.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ include "pdc.serviceAccountName" . }}
       imagePullSecrets:
@@ -45,17 +47,17 @@ spec:
             - containerPort: 7777
               name: pdc-7777
           env:
-            {{ template "env.defaults" . }}
-            {{ template "env.pdc" . }}
+            {{- include "env.defaults" . | nindent 12 }}
+            {{- include "env.pdc" . | nindent 12 }}
           envFrom:
-            # - configMapRef:
-            #     name: {{ .Release.Name }}-common
             - configMapRef:
-                name: {{ .Release.Name }}-pdc
+                name: config-{{ .Values.pdc.name }}
+
           # readinessProbe:
           #   httpGet:
           #     path: /WebMaintenance/
           #     port: 39830
+
           volumeMounts:
             - name: pdc-db
               mountPath: /enactor/pdc/database
