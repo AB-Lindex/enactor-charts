@@ -47,7 +47,7 @@ spec:
             - containerPort: 2099
               name: pdc-2099
             - containerPort: 7776
-              name: pdc-7706
+              name: pdc-7776
             - containerPort: 7777
               name: pdc-7777
           env:

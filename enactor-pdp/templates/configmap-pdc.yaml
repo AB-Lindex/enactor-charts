@@ -7,7 +7,7 @@ metadata:
   labels:
     {{- include "pdc.selectorLabels" . | nindent 4 }}
 data:
-  ENACTOR_PD_HOST_ID: PDH-{{ .Values.store.id }}-10-01
+  ENACTOR_PD_HOST_ID: PDH-{{ .Values.store.id }}-10-02
   ENACTOR_PDC_DATABASE_LOCATION: /enactor/pdc/database/pdc/
   ENACTOR_PDC_TMS_HOST: {{ .Values.estate.tms.name }}
   ENACTOR_PDC_TMS_PORT: {{ .Values.estate.tms.port | quote }}
