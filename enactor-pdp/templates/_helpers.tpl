@@ -3,7 +3,7 @@ Selector labels - pdp
 */}}
 {{- define "pdp.selectorLabels" -}}
 app.kubernetes.io/name: pdp
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .id }}
 {{- end }}
 
 {{/*
@@ -11,8 +11,20 @@ Selector labels - pdc
 */}}
 {{- define "pdc.selectorLabels" -}}
 app.kubernetes.io/name: pdc
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .id }}
 {{- end }}
+
+{{/*
+Selector labels - common
+*/}}
+{{- define "common.selectorLabels" -}}
+{{- range $key, $value := .Values.labels -}}
+{{ $key }}: {{ $value | quote }}
+{{ end -}}{{- end -}}
+
+{{/*
+{{- end }}
+
 
 {{/*
 Expand the name of the chart.
@@ -33,10 +45,6 @@ Name of pdc serviceaccount.
 */}}
 {{- define "pdc.serviceAccountName" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{- define "ems.https" -}}
-https://lxconstore21.lindex.to:52243
 {{- end }}
 
 {{- define "dbserver" -}}
@@ -63,8 +71,4 @@ jdbc:mysql:\/\/{{ include "dbserver" . }}:3306\/{{ .Values.mariadb.auth.database
 {{- end }}
 
 {{- define "env.pdc" -}}
-{{- end }}
-
-{{- define "deviceid" -}}
-pdpServer@{{ .Values.store.id }}.Enactor
 {{- end }}

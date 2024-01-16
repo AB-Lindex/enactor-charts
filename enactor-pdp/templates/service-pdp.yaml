@@ -1,7 +1,11 @@
+{{- $root := . }}
+{{- $basepath := .Template.BasePath }}
+{{- range $pos := .Values.pdp.instances }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.pdp.name }}
+  name: pdp-{{ .id }}
   labels:
     {{- include "pdp.selectorLabels" . | nindent 4 }}
 spec:
@@ -13,3 +17,4 @@ spec:
       name: http
   selector:
     {{- include "pdp.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -1,25 +1,32 @@
-{{ if .Values.pdc.enabled }}
+{{- $root := . }}
+{{- $basepath := .Template.BasePath }}
+{{- range $pos := .Values.pdc.instances }}
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.pdc.name }}
-  namespace: {{ .Release.Namespace }}
+  name: pdc-{{ .id }}
+  namespace: {{ $root.Release.Namespace }}
+  labels:
+    {{- include "common.selectorLabels" $root | nindent 4 }}
 spec:
   selector:
     matchLabels:
       {{- include "pdc.selectorLabels" . | nindent 6 }}
-  replicas: 1
+  replicas: {{ $root.Values.replicas }}
   template:
     metadata:
       labels:
         {{- include "pdc.selectorLabels" . | nindent 8 }}
+        {{- include "common.selectorLabels" $root | nindent 8 }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap-pdc.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $basepath "/configmap-pdc.yaml") $root | sha256sum }}
     spec:
-      serviceAccountName: {{ include "pdc.serviceAccountName" . }}
-      {{- if .Values.imagePullSecrets }}
+      terminationGracePeriodSeconds: 15
+      serviceAccountName: {{ include "pdc.serviceAccountName" $root }}
+      {{- if $root.Values.imagePullSecrets }}
       imagePullSecrets:
-      {{- range $name := .Values.imagePullSecrets }}
+      {{- range $name := $root.Values.imagePullSecrets }}
         - name: {{ $name }}
       {{- end }}
       {{- end }}
@@ -31,31 +38,39 @@ spec:
       #     runAsGroup: 1100
       #     fsGroup: 1100
 
-      hostAliases:
-        - ip: "127.0.0.1"
-          hostnames:
-            - "localhost"
-            - "{{ .Values.pdc.name }}"
+#      hostAliases:
+#        - ip: "127.0.0.1"
+#          hostnames:
+#            - "localhost"
+#            - "{{ $root.Values.pdc.name }}"
 
       containers:
         - name: pdc
-          image: {{ .Values.pdc.image.repository }}:{{ .Values.pdc.image.tag | default  "latest" }}
-          imagePullPolicy: {{ .Values.pdc.image.pullPolicy  }}
+          image: {{ $root.Values.pdc.image.repository }}:{{ $root.Values.pdc.image.tag | default  "latest" }}
+          imagePullPolicy: {{ $root.Values.pdc.image.pullPolicy  }}
           ports:
             - containerPort: 8080
               name: pdc-http
             - containerPort: 2099
               name: pdc-2099
+            - containerPort: 7775
+              name: pdc-7775
             - containerPort: 7776
               name: pdc-7776
             - containerPort: 7777
               name: pdc-7777
           env:
-            {{- include "env.defaults" . | nindent 12 }}
-            {{- include "env.pdc" . | nindent 12 }}
+            {{- include "env.defaults" $root | nindent 12 }}
+            {{- include "env.pdc" $root | nindent 12 }}
+            - name: ENACTOR_PD_HOST_ID
+              value: {{ .hostId | quote }}
+
           envFrom:
             - configMapRef:
-                name: config-{{ .Values.pdc.name }}
+                name: config-common
+                
+            - configMapRef:
+                name: config-{{ $root.Values.pdc.name }}
 
           # readinessProbe:
           #   httpGet:
@@ -72,18 +87,18 @@ spec:
       volumes:
       #   - name: keystore
       #     secret:
-      #       secretName: {{ .Release.Name }}-keystore
+      #       secretName: {{ $root.Release.Name }}-keystore
         # - name: enactor-config
         #   configMap:
-        #     name: {{ .Release.Name }}-enactor-config
+        #     name: {{ $root.Release.Name }}-enactor-config
       
   volumeClaimTemplates:
     - metadata:
         name: pdc-db
       spec:
-        storageClassName: {{ .Values.pdc.persistence.storageClass }}
+        storageClassName: {{ $root.Values.pdc.persistence.storageClass }}
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: {{ .Values.pdc.persistence.size }}
+            storage: {{ $root.Values.pdc.persistence.size }}
 {{- end }}

@@ -1,0 +1,5 @@
+{{- $v := .Values.store.number | required "store.number is required" -}}
+{{- $v := .Values.company.name | required "company.name is required" -}}
+{{- $v := .Values.pdp.persistence.storageClass | required "pdp.persistence.storageClass is required" -}}
+{{- $v := .Values.pdc.persistence.storageClass | required "pdc.persistence.storageClass is required" -}}
+{{- $v := .Values.mariadb.primary.persistence.storageClass | required "mariadb.primary.persistence.storageClass is required" -}}

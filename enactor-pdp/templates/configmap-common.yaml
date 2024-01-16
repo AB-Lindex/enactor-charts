@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-common
+  namespace: {{ .Release.Namespace }}
+data:
+  JAVA_COUNTRY: {{ .Values.java.country }}
+  JAVA_LANGUAGE:  {{ .Values.java.language }}
+  JTIMEZONE:  {{ .Values.java.timezone }}
+  # JMPS: 512m
+  # JXMS: 512m
+  # JXMX: 768m
+  # JAVA_HOME: /enactor/shared/java/jdk1.8.0_232
+  # JRE_HOME: /enactor/shared/java/jdk1.8.0_232

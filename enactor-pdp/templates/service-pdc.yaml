@@ -1,7 +1,10 @@
+{{- $root := . }}
+{{- range $pos := .Values.pdc.instances }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.pdc.name }}
+  name: pdc-{{ .id }}
   labels:
     {{- include "pdc.selectorLabels" . | nindent 4 }}
 spec:
@@ -11,9 +14,14 @@ spec:
       targetPort: pdc-7776
       protocol: TCP
       name: pdc-7776
+    - port: 7775
+      targetPort: pdc-7775
+      protocol: TCP
+      name: pdc-7775
     - port: 7777
       targetPort: pdc-7777
       protocol: TCP
       name: pdc-7777
   selector:
     {{- include "pdc.selectorLabels" . | nindent 4 }}
+{{- end }}

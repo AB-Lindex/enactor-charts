@@ -1,17 +1,14 @@
-{{ if .Values.pdc.enabled }}
+{{ if .Values.pdc.instances }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-{{ .Values.pdc.name }}
+  name: config-pdc
   namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "pdc.selectorLabels" . | nindent 4 }}
 data:
-  ENACTOR_PD_HOST_ID: PDH-{{ .Values.store.id }}-10-02
   ENACTOR_PDC_DATABASE_LOCATION: /enactor/pdc/database/pdc/
-  ENACTOR_PDC_TMS_HOST: {{ .Values.estate.tms.name }}
+  ENACTOR_PDC_TMS_HOST: {{ .Values.estate.tms.name | quote }}
   ENACTOR_PDC_TMS_PORT: {{ .Values.estate.tms.port | quote }}
-  ENACTOR_PDC_COMPANY_NAME: Lindex
+  ENACTOR_PDC_COMPANY_NAME: {{ .Values.company.name | quote }}
   ENACTOR_COMMON_LICENSE_FILENAME: /enactor/pdc/licence/licence.xml
   ENACTOR_DEVICE_TYPE: PAYMENT_SERVICE
   ENACTOR_APPLICATION: /enactor

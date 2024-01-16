@@ -1,41 +1,37 @@
-{{ if .Values.pdp.enabled }}
+{{- $root := . }}
+{{- $basepath := .Template.BasePath }}
+{{- range $pos := .Values.pdp.instances }}
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.pdp.name }}
-  namespace: {{ .Release.Namespace }}
+  name: pdp-{{ .id }}
+  namespace: {{ $root.Release.Namespace }}
+  labels:
+    {{- include "common.selectorLabels" $root | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "pdp.selectorLabels" . | nindent 6 }}
-  replicas: 1
+      {{- include "pdp.selectorLabels" $root | nindent 6 }}
+  replicas: {{ $root.Values.replicas }}
   template:
     metadata:
       labels:
-        {{- include "pdp.selectorLabels" . | nindent 8 }}
+        {{- include "pdp.selectorLabels" $root | nindent 8 }}
+        {{- include "common.selectorLabels" $root | nindent 8 }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap-pdp.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-pdp.yaml") $root | sha256sum }}
     spec:
-      serviceAccountName: {{ include "pdp.serviceAccountName" . }}
-      {{- if .Values.imagePullSecrets }}
+      terminationGracePeriodSeconds: 15
+      serviceAccountName: {{ include "pdp.serviceAccountName" $root }}
+      {{- if $root.Values.imagePullSecrets }}
       imagePullSecrets:
-      {{- range $name := .Values.imagePullSecrets }}
+      {{- range $name := $root.Values.imagePullSecrets }}
         - name: {{ $name }}
       {{- end }}
       {{- end }}
 
       enableServiceLinks: false
-
-      # securityContext:
-      #     runAsUser: 1100
-      #     runAsGroup: 1100
-      #     fsGroup: 1100
-
-      hostAliases:
-        - ip: "127.0.0.1"
-          hostnames:
-            - "localhost"
-            - "{{ .Values.pdp.name }}"
 
       initContainers:
         - name: verifydb
@@ -52,12 +48,12 @@ spec:
               echo -e "  >> MySQL DB Server '$SERVERNAME' has started";
           env:
             - name: SERVERNAME
-              value: {{ template "dbserver" . }}
+              value: {{ template "dbserver" $root }}
 
       containers:
         - name: pdp
-          image: {{ .Values.pdp.image.repository }}:{{ .Values.pdp.image.tag | default  "latest" }}
-          imagePullPolicy: {{ .Values.pdp.image.pullPolicy  }}
+          image: {{ $root.Values.pdp.image.repository }}:{{ $root.Values.pdp.image.tag | default  "latest" }}
+          imagePullPolicy: {{ $root.Values.pdp.image.pullPolicy  }}
           ports:
             - containerPort: 39901
               name: pdp-http
@@ -68,11 +64,20 @@ spec:
             - containerPort: 39848
               name: pdp-jmx
           env:
-            {{- include "env.defaults" . | nindent 12 }}
-            {{- include "env.pdp" . | nindent 12 }}
+            {{- include "env.defaults" $root | nindent 12 }}
+            {{- include "env.pdp" $root | nindent 12 }}
+            - name: ENACTOR_CONTAINER_DEVICEID
+              value: {{ .hostId | quote }}
+            - name: ENACTOR_JMX_APPLICATIONID
+              value: {{ .hostId | quote }}
+            - name: ENACTOR_SERVICE_DEVICEID
+              value: {{ .hostId | quote }}
           envFrom:
             - configMapRef:
-                name: config-{{ .Values.pdp.name }}
+                name: config-common
+                
+            - configMapRef:
+                name: config-{{ $root.Values.pdp.name }}
 
             - secretRef:
                 name: secret-common
@@ -94,21 +99,21 @@ spec:
       volumes:
         - name: truststore
           secret:
-            secretName: {{ .Values.truststore.certSecret }}
+            secretName: {{ $root.Values.truststore.certSecret }}
       #   - name: keystore
       #     secret:
-      #       secretName: {{ .Release.Name }}-keystore
+      #       secretName: {{ $root.Release.Name }}-keystore
         # - name: enactor-config
         #   configMap:
-        #     name: {{ .Release.Name }}-enactor-config
+        #     name: {{ $root.Release.Name }}-enactor-config
       
   volumeClaimTemplates:
     - metadata:
         name: pdp-home
       spec:
-        storageClassName: {{ .Values.pdp.persistence.storageClass }}
+        storageClassName: {{ $root.Values.pdp.persistence.storageClass }}
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: {{ .Values.pdp.persistence.size }}
-{{ end }}
+            storage: {{ $root.Values.pdp.persistence.size }}
+{{- end }}

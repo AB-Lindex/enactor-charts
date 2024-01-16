@@ -8,7 +8,11 @@ dns:
   emp: emp
 
 store:
-  id: "unknown" # The store-id
+  number: null # The store-id
+  name: null # The name of the store
+
+company:
+  name: null # The name of the company
 
 estate:
   ema: http://ema.backend
@@ -20,6 +24,14 @@ estate:
   tms:
     name: ems.backend
     port: 39888
+
+  common:
+    processSet: NextGen
+    parentProcessSet: ""
+    processDefinitionID: ""
+
+  react:
+    contentURL: null
 
 truststore:
   certSecret: truststore
@@ -33,12 +45,14 @@ java:
 pdp:
   name: pdp
   enabled: true
+  axis2:
+    user: admin
   image:
     repository: enactorpdp
     tag: latest
     pullPolicy: Always
   persistence:
-    storageClass: ""
+    storageClass: null
     size: "10Gi"
 
 pdc:
@@ -49,7 +63,7 @@ pdc:
     tag: latest
     pullPolicy: Always
   persistence:
-    storageClass: ""
+    storageClass: null
     size: "10Gi"
 
 # image:
@@ -140,7 +154,7 @@ mariadb:
   primary:
     persistence:
       size: "25Gi"
-      storageClass: managed-nfs-storage-retain
+      storageClass: null
     configuration: |
       [mysqld]
       skip-name-resolve
@@ -175,3 +189,4 @@ mariadb:
       socket=/opt/bitnami/mariadb/tmp/mysql.sock
       pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
     
+replicas: 1
