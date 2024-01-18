@@ -53,7 +53,7 @@ spec:
       containers:
         - name: pdp
 #          image: {{ $root.Values.pdp.image.repository }}:{{ $root.Values.pdp.image.tag | default  "latest" }}
-          image: {{ include "image" $root.pdp.image }}
+          image: {{ include "image" $root.Values.pdp.image }}
           imagePullPolicy: {{ $root.Values.pdp.image.pullPolicy  }}
           ports:
             - containerPort: 39901
