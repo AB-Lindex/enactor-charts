@@ -10,9 +10,12 @@ dns:
 store:
   number: null # The store-id
   name: null # The name of the store
+  country: null
 
 company:
   name: null # The name of the company
+
+labels: {}
 
 estate:
   ema: http://ema.backend
@@ -50,6 +53,7 @@ pdp:
   image:
     repository: enactorpdp
     tag: latest
+    tag_override:
     pullPolicy: Always
   persistence:
     storageClass: null
@@ -61,6 +65,7 @@ pdc:
   image:
     repository: enactorpdp
     tag: latest
+    tag_override:
     pullPolicy: Always
   persistence:
     storageClass: null

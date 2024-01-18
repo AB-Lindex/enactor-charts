@@ -72,3 +72,11 @@ jdbc:mysql:\/\/{{ include "dbserver" . }}:3306\/{{ .Values.mariadb.auth.database
 
 {{- define "env.pdc" -}}
 {{- end }}
+
+
+{{/*
+Create image
+*/}}
+{{- define "image" -}}
+{{ .repository }}:{{ .tag_override | default .tag | default  "latest" }}
+{{- end }}

@@ -46,7 +46,8 @@ spec:
 
       containers:
         - name: pdc
-          image: {{ $root.Values.pdc.image.repository }}:{{ $root.Values.pdc.image.tag | default  "latest" }}
+#          image: {{ $root.Values.pdc.image.repository }}:{{ $root.Values.pdc.image.tag | default  "latest" }}
+          image: {{ include "image" $root.pdc.image }}
           imagePullPolicy: {{ $root.Values.pdc.image.pullPolicy  }}
           ports:
             - containerPort: 8080
