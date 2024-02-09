@@ -1,6 +1,7 @@
 # Default values for enactor-pdp.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
 dns:
   domain: my.fqdn.address
   ems: ems
@@ -70,6 +71,8 @@ pdc:
   persistence:
     storageClass: null
     size: "10Gi"
+
+extraObjects: []
 
 # image:
 #   repository: nginx

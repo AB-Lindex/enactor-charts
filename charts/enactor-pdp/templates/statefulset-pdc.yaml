@@ -33,29 +33,17 @@ spec:
 
       enableServiceLinks: false
 
-      # securityContext:
-      #     runAsUser: 1100
-      #     runAsGroup: 1100
-      #     fsGroup: 1100
-
-#      hostAliases:
-#        - ip: "127.0.0.1"
-#          hostnames:
-#            - "localhost"
-#            - "{{ $root.Values.pdc.name }}"
-
       containers:
         - name: pdc
-#          image: {{ $root.Values.pdc.image.repository }}:{{ $root.Values.pdc.image.tag | default  "latest" }}
           image: {{ include "image" $root.Values.pdc.image }}
           imagePullPolicy: {{ $root.Values.pdc.image.pullPolicy  }}
           ports:
-            - containerPort: 8080
-              name: pdc-http
-            - containerPort: 2099
-              name: pdc-2099
-            - containerPort: 7775
-              name: pdc-7775
+            #- containerPort: 8080
+            #  name: pdc-http
+            #- containerPort: 2099
+            #  name: pdc-2099
+            #- containerPort: 7775
+            #  name: pdc-7775
             - containerPort: 7776
               name: pdc-7776
             - containerPort: 7777
@@ -73,26 +61,10 @@ spec:
             - configMapRef:
                 name: config-{{ $root.Values.pdc.name }}
 
-          # readinessProbe:
-          #   httpGet:
-          #     path: /WebMaintenance/
-          #     port: 39830
-
           volumeMounts:
             - name: pdc-db
               mountPath: /enactor/pdc/database
-            # - name: enactor-config
-            #   mountPath: /enactor/app/config/enactor.xml
-            #   subPath: enactor.xml
 
-      volumes:
-      #   - name: keystore
-      #     secret:
-      #       secretName: {{ $root.Release.Name }}-keystore
-        # - name: enactor-config
-        #   configMap:
-        #     name: {{ $root.Release.Name }}-enactor-config
-      
   volumeClaimTemplates:
     - metadata:
         name: pdc-db

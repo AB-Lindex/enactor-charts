@@ -52,7 +52,6 @@ spec:
 
       containers:
         - name: pdp
-#          image: {{ $root.Values.pdp.image.repository }}:{{ $root.Values.pdp.image.tag | default  "latest" }}
           image: {{ include "image" $root.Values.pdp.image }}
           imagePullPolicy: {{ $root.Values.pdp.image.pullPolicy  }}
           ports:
@@ -64,6 +63,27 @@ spec:
               name: jmx
             - containerPort: 39848
               name: pdp-jmx
+            - containerPort: 8080
+              name: health
+
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: health
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: health
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+
           env:
             {{- include "env.defaults" $root | nindent 12 }}
             {{- include "env.pdp" $root | nindent 12 }}
@@ -83,30 +103,16 @@ spec:
             - secretRef:
                 name: secret-common
                 
-          # readinessProbe:
-          #   httpGet:
-          #     path: /WebMaintenance/
-          #     port: 39830
-
           volumeMounts:
             - name: pdp-home
               mountPath: /enactor/app/home
             - name: truststore
               mountPath: /enactor/app/custom/trust
-            # - name: enactor-config
-            #   mountPath: /enactor/app/config/enactor.xml
-            #   subPath: enactor.xml
 
       volumes:
         - name: truststore
           secret:
             secretName: {{ $root.Values.truststore.certSecret }}
-      #   - name: keystore
-      #     secret:
-      #       secretName: {{ $root.Release.Name }}-keystore
-        # - name: enactor-config
-        #   configMap:
-        #     name: {{ $root.Release.Name }}-enactor-config
       
   volumeClaimTemplates:
     - metadata:

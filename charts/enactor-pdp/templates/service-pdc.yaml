@@ -14,10 +14,10 @@ spec:
       targetPort: pdc-7776
       protocol: TCP
       name: pdc-7776
-    - port: 7775
-      targetPort: pdc-7775
-      protocol: TCP
-      name: pdc-7775
+#     - port: 7775
+#       targetPort: pdc-7775
+#       protocol: TCP
+#       name: pdc-7775
     - port: 7777
       targetPort: pdc-7777
       protocol: TCP
