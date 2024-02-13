@@ -12,12 +12,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "pdp.selectorLabels" $root | nindent 6 }}
+      {{- include "pdp.selectorLabels" . | nindent 6 }}
   replicas: {{ $root.Values.replicas }}
   template:
     metadata:
       labels:
-        {{- include "pdp.selectorLabels" $root | nindent 8 }}
+        {{- include "pdp.selectorLabels" . | nindent 8 }}
         {{- include "common.selectorLabels" $root | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap-pdp.yaml") $root | sha256sum }}
