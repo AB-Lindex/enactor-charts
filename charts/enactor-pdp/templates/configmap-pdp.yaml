@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   {{- if .Values.pdp.env }}
-  {{ .Values.pdp.env | toYaml }}
+  {{ .Values.pdp.env | toYaml | nindent 2 }}
   {{- end }}
   ENACTOR_PDPMESSAGEFACTORY_CLASSNAME: com.enactor.coreUI.web.PDP.json.messages.PDPMixedModeMessageFactory
   ENACTOR_PDPPAGEELEMENTHANDLERFACTORY_CLASSNAME: com.enactor.coreUI.web.PDP.json.pageElementHandlers.PDPJsonPageElementHandlerFactory
