@@ -60,6 +60,20 @@ pdp:
   persistence:
     storageClass: null
     size: "10Gi"
+  ports:
+    jmxServer: 39847
+    jmxService: 39848
+  resources:
+    ## Example:
+    ## limits:
+    ##    cpu: 0.5
+    ##    memory: 256Mi
+    limits: {}
+    ## Examples:
+    ## requests:
+    ##    cpu: 0.5
+    ##    memory: 256Mi
+    requests: {}
 
 pdc:
   name: pdc
@@ -73,6 +87,17 @@ pdc:
   persistence:
     storageClass: null
     size: "10Gi"
+  resources:
+    ## Example:
+    ## limits:
+    ##    cpu: 0.5
+    ##    memory: 256Mi
+    limits: {}
+    ## Examples:
+    ## requests:
+    ##    cpu: 0.5
+    ##    memory: 256Mi
+    requests: {}
 
 extraObjects: []
 

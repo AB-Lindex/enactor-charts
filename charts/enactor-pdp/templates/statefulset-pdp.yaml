@@ -59,12 +59,16 @@ spec:
               name: pdp-http
             - containerPort: 53311
               name: pdp-https
-            - containerPort: 39847
-              name: jmx
-            - containerPort: 39848
-              name: pdp-jmx
+#            - containerPort: 39847
+#              name: jmx
+#            - containerPort: 39848
+#              name: pdp-jmx
             - containerPort: 8080
               name: health
+          {{- range $name,$port := $root.Values.pdp.ports }}
+            - containerPort: {{ $port }}
+              name: {{ $name }}
+          {{- end}}
 
           livenessProbe:
             httpGet:
@@ -93,6 +97,10 @@ spec:
               value: {{ .hostId | quote }}
             - name: ENACTOR_SERVICE_DEVICEID
               value: {{ .hostId | quote }}
+            {{- range $key, $val := $root.Values.pdp.env }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: config-common
@@ -102,7 +110,11 @@ spec:
 
             - secretRef:
                 name: secret-common
-                
+
+          {{- if $root.Values.pdp.resources }}
+          resources: {{- toYaml $root.Values.pdp.resources | nindent 12 }}
+          {{- end }}
+
           volumeMounts:
             - name: pdp-home
               mountPath: /enactor/app/home

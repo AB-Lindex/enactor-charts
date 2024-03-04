@@ -61,6 +61,10 @@ spec:
             - configMapRef:
                 name: config-{{ $root.Values.pdc.name }}
 
+          {{- if $root.Values.pdc.resources }}
+          resources: {{- toYaml $root.Values.pdc.resources | nindent 12 }}
+          {{- end }}
+
           volumeMounts:
             - name: pdc-db
               mountPath: /enactor/pdc/database

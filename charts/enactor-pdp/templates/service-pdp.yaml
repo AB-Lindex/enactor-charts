@@ -15,6 +15,12 @@ spec:
       targetPort: pdp-http
       protocol: TCP
       name: http
+  {{- range $name,$port := $root.Values.pdp.ports }}
+    - port: {{ $port }}
+      protocol: TCP
+      targetPort: {{ $name }}
+      name: {{ $name }}
+  {{- end}}
   selector:
     {{- include "pdp.selectorLabels" . | nindent 4 }}
 {{- end }}
