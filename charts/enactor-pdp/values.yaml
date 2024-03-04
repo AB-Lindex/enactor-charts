@@ -61,8 +61,8 @@ pdp:
     storageClass: null
     size: "10Gi"
   ports:
-    jmxServer: 39847
-    jmxService: 39848
+    jmx-server: 39847
+    jmx-service: 39848
   resources:
     ## Example:
     ## limits:
