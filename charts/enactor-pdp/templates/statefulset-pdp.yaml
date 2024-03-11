@@ -121,10 +121,17 @@ spec:
             - name: truststore
               mountPath: /enactor/app/custom/trust
 
+        {{- if $root.Values.pdp.extraContainers }}
+        {{- toYaml $root.Values.pdp.extraContainers | nindent 8 }}
+        {{- end }}
+
       volumes:
         - name: truststore
           secret:
             secretName: {{ $root.Values.truststore.certSecret }}
+        {{- if $root.Values.pdp.extraConfigmapMounts }}
+        {{- toYaml $root.Values.pdp.extraConfigmapMounts | nindent 8 }}
+        {{- end }}
       
   volumeClaimTemplates:
     - metadata:
