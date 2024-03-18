@@ -53,6 +53,10 @@ spec:
             {{- include "env.pdc" $root | nindent 12 }}
             - name: ENACTOR_PD_HOST_ID
               value: {{ .hostId | quote }}
+            {{- range $key, $val := $root.Values.pdc.env }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
 
           envFrom:
             - configMapRef:
@@ -68,6 +72,10 @@ spec:
           volumeMounts:
             - name: pdc-db
               mountPath: /enactor/pdc/database
+
+        {{- if $root.Values.pdc.extraContainers }}
+        {{- toYaml $root.Values.pdc.extraContainers | nindent 8 }}
+        {{- end }}
 
   volumeClaimTemplates:
     - metadata:
