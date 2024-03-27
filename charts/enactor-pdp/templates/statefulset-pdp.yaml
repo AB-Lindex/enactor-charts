@@ -115,13 +115,13 @@ spec:
           resources: {{- toYaml $root.Values.pdp.resources | nindent 12 }}
           {{- end }}
 
-          volumeMounts:
+          volumeMounts: {{ if $root.Values.pdp.extraVolumeMounts }}{{ toYaml $root.Values.pdp.extraVolumeMounts | nindent 12 }}{{ end }}
             - name: pdp-home
               mountPath: /enactor/app/home
             - name: truststore
               mountPath: /enactor/app/custom/trust
 
-        {{- if $root.Values.pdp.extraContainers }}
+        {{ if $root.Values.pdp.extraContainers }}
         {{- toYaml $root.Values.pdp.extraContainers | nindent 8 }}
         {{- end }}
 

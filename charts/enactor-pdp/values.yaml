@@ -74,6 +74,7 @@ pdp:
     ##    cpu: 0.5
     ##    memory: 256Mi
     requests: {}
+  extraVolumeMounts: []
 
 pdc:
   name: pdc
