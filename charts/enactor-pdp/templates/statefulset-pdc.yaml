@@ -31,6 +31,14 @@ spec:
       {{- end }}
       {{- end }}
 
+      {{ if $root.Values.pdc.priorityClassName -}}
+      priorityClassName: {{ $root.Values.pdc.priorityClassName }}
+      {{- end }}
+      {{ if $root.Values.pdc.affinity -}}
+      affinity:
+        {{- toYaml $root.Values.pdc.affinity | nindent 8 }}
+      {{- end }}
+
       enableServiceLinks: false
 
       containers:
@@ -69,13 +77,18 @@ spec:
           resources: {{- toYaml $root.Values.pdc.resources | nindent 12 }}
           {{- end }}
 
-          volumeMounts:
+          volumeMounts: {{ if $root.Values.pdc.extraVolumeMounts }}{{ toYaml $root.Values.pdc.extraVolumeMounts | nindent 12 }}{{ end }}
             - name: pdc-db
               mountPath: /enactor/pdc/database
 
         {{- if $root.Values.pdc.extraContainers }}
         {{- toYaml $root.Values.pdc.extraContainers | nindent 8 }}
         {{- end }}
+
+      {{- if $root.Values.pdc.extraConfigmapMounts }}
+      volumes:
+        {{- toYaml $root.Values.pdc.extraConfigmapMounts | nindent 8 }}
+      {{- end }}
 
   volumeClaimTemplates:
     - metadata:

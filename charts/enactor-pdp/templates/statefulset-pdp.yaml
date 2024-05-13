@@ -31,6 +31,14 @@ spec:
       {{- end }}
       {{- end }}
 
+      {{ if $root.Values.pdp.priorityClassName -}}
+      priorityClassName: {{ $root.Values.pdp.priorityClassName }}
+      {{- end }}
+      {{ if $root.Values.pdp.affinity -}}
+      affinity:
+        {{- toYaml $root.Values.pdp.affinity | nindent 8 }}
+      {{- end }}
+
       enableServiceLinks: false
 
       initContainers:
@@ -70,22 +78,31 @@ spec:
               name: {{ $name }}
           {{- end}}
 
+          startupProbe:
+            tcpSocket:
+              port: 39901
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 30
+
           livenessProbe:
-            httpGet:
-              path: /live
-              port: health
-            initialDelaySeconds: 60
+#            httpGet:
+#              path: /live
+#              port: health
+            tcpSocket:
+              port: 39901
+#            initialDelaySeconds: 60
             periodSeconds: 15
-            timeoutSeconds: 5
             failureThreshold: 3
 
           readinessProbe:
-            httpGet:
-              path: /ready
-              port: health
-            initialDelaySeconds: 60
+#            httpGet:
+#              path: /ready
+#              port: health
+            tcpSocket:
+              port: 39901
+            initialDelaySeconds: 5
             periodSeconds: 15
-            timeoutSeconds: 5
             failureThreshold: 3
 
           env:

@@ -75,6 +75,8 @@ pdp:
     ##    memory: 256Mi
     requests: {}
   extraVolumeMounts: []
+  extraConfigmapMounts: []
+  affinity: null
 
 pdc:
   name: pdc
@@ -99,6 +101,9 @@ pdc:
     ##    cpu: 0.5
     ##    memory: 256Mi
     requests: {}
+  extraVolumeMounts: []
+  extraConfigmapMounts: []
+  affinity: null
 
 extraObjects: []
 
