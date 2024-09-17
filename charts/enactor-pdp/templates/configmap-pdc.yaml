@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   {{- if .Values.pdc.env }}
-  {{ .Values.pdc.env | toYaml }}
+  {{ .Values.pdc.env | toYaml | nindent 2 }}
   {{- end }}
   ENACTOR_PDC_DATABASE_LOCATION: /enactor/pdc/database/pdc/
   ENACTOR_PDC_TMS_HOST: {{ .Values.estate.tms.name | quote }}

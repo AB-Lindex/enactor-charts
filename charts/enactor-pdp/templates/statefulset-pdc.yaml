@@ -39,6 +39,11 @@ spec:
         {{- toYaml $root.Values.pdc.affinity | nindent 8 }}
       {{- end }}
 
+      {{ if $root.Values.pdc.securityContext -}}
+      securityContext:
+        {{- toYaml $root.Values.pdc.securityContext | nindent 8 }}
+      {{- end }}
+      
       enableServiceLinks: false
 
       containers:
