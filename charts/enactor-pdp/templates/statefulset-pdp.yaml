@@ -44,6 +44,13 @@ spec:
         {{- toYaml $root.Values.pdp.securityContext | nindent 8 }}
       {{- end }}
 
+      {{ if $root.Values.pdp.nodeName -}}
+      nodeName: {{ $root.Values.pdp.nodeName }}
+      {{- end }}
+      {{ if $root.Values.pdp.nodeSelector -}}
+      nodeSelector:
+        {{- toYaml $root.Values.pdp.nodeSelector | nindent 8 }}
+      {{- end }}
 
       enableServiceLinks: false
 

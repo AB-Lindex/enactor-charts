@@ -78,6 +78,8 @@ pdp:
   extraConfigmapMounts: []
   affinity: null
   securityContext: null
+  nodeName: null
+  nodeSelector: {}
 
 pdc:
   name: pdc
@@ -106,6 +108,8 @@ pdc:
   extraConfigmapMounts: []
   affinity: null
   securityContext: null
+  nodeName: null
+  nodeSelector: {}
 
 extraObjects: []
 
