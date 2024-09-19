@@ -21,6 +21,7 @@ spec:
         {{- include "common.selectorLabels" $root | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap-pdp.yaml") $root | sha256sum }}
+        argocd.argoproj.io/sync-wave: "1"
     spec:
       terminationGracePeriodSeconds: 15
       serviceAccountName: {{ include "pdp.serviceAccountName" $root }}
