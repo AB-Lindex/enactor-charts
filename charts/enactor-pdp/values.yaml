@@ -2,6 +2,13 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+features:
+  argocdSyncwaves:
+    enabled: false
+    waves:
+      pdp: 10
+      pdc: 20
+
 dns:
   domain: my.fqdn.address
   ems: ems
