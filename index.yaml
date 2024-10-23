@@ -23,6 +23,25 @@ entries:
   enactor-pdp:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2024-10-23T08:58:20.273011058Z"
+    dependencies:
+    - condition: mariadb.deploy
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.4.0
+    description: Enactor PDP-server
+    digest: a5e2862882399c131f2da4299603f755bbdd1d3a7daa304cc49af5e610ebfb66
+    home: https://github.com/enactor-customer-oss/enactor-charts
+    maintainers:
+    - email: hans.brinck@lindex.com
+      name: Hans Brinck
+    name: enactor-pdp
+    type: application
+    urls:
+    - https://github.com/AB-Lindex/enactor-charts/releases/download/enactor-pdp-0.2.19/enactor-pdp-0.2.19.tgz
+    version: 0.2.19
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2024-10-23T08:44:04.594855877Z"
     dependencies:
     - condition: mariadb.deploy
@@ -401,4 +420,4 @@ entries:
     urls:
     - https://github.com/AB-Lindex/enactor-charts/releases/download/enactor-pdp-0.1.0/enactor-pdp-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-23T08:44:04.595025425Z"
+generated: "2024-10-23T08:58:20.273165206Z"
