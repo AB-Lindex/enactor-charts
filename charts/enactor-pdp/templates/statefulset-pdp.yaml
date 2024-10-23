@@ -9,6 +9,10 @@ metadata:
   namespace: {{ $root.Release.Namespace }}
   labels:
     {{- include "common.selectorLabels" $root | nindent 4 }}
+  annotations:
+    {{- if $root.Values.features.argocdSyncwaves.enabled }}
+    argocd.argoproj.io/sync-wave: {{ $root.Values.features.argocdSyncwaves.waves.pdp | default 10 | quote }}
+    {{- end }}
 spec:
   selector:
     matchLabels:
