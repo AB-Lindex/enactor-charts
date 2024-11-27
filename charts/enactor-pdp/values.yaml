@@ -199,6 +199,8 @@ affinity: {}
 
 # Thirdparty Configuration
 mariadb:
+  image:
+    tag: 10.6.20
   fullnameOverride: mariadb
   deploy: true
   auth:
