@@ -200,7 +200,7 @@ affinity: {}
 # Thirdparty Configuration
 mariadb:
   image:
-    tag: 10.6.20
+    tag: 10.6.20-debian-12-r1
   fullnameOverride: mariadb
   deploy: true
   auth:
