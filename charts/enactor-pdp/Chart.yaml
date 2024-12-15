@@ -4,12 +4,14 @@ description: Enactor PDP-server
 
 type: application
 
-version: 0.2.23
+version: 0.2.24
 appVersion: "1.0"
 
 maintainers: 
   - name: Hans Brinck
     email: hans.brinck@lindex.com
+  - name: Olof Spetz
+    email: olof.spetz@lindex.com
 
 home: https://github.com/enactor-customer-oss/enactor-charts
 

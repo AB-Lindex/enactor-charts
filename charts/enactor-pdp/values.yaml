@@ -48,6 +48,9 @@ truststore:
   certSecret: truststore
   pwdSecret: truststore-pwd
 
+keystore:
+  certSecret: keystore
+
 java:
   country: SE
   language: en
