@@ -8,8 +8,6 @@ features:
     waves:
       pdp: 10
       pdc: 20
-  argocdMultipleProjectsPerCountry:
-    enabled: false
 
 dns:
   domain: my.fqdn.address
