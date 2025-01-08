@@ -4,9 +4,9 @@ metadata:
   name: config-common
   namespace: {{ .Release.Namespace }}
 data:
-  JAVA_COUNTRY: {{ .Values.java.country }}
-  JAVA_LANGUAGE:  {{ .Values.java.language }}
-  JTIMEZONE:  {{ .Values.java.timezone }}
+  JAVA_COUNTRY: {{ .Values.java.country | quote }}
+  JAVA_LANGUAGE:  {{ .Values.java.language | quote }}
+  JTIMEZONE:  {{ .Values.java.timezone | quote }}
 {{/*
   # JMPS: 512m
   # JXMS: 512m
