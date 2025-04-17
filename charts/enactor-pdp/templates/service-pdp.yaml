@@ -1,6 +1,7 @@
 {{- $root := . }}
 {{- $basepath := .Template.BasePath }}
 {{- range $pos := .Values.pdp.instances }}
+  {{- if eq .platform $root.Values.pdp.platform }}
 ---
 apiVersion: v1
 kind: Service
@@ -9,7 +10,7 @@ metadata:
   labels:
     {{- include "pdp.selectorLabels" . | nindent 4 }}
 spec:
-  type: ClusterIP
+  type: {{ $root.Values.pdp.serviceType }}
   ports:
     - port: 39901
       targetPort: pdp-http
@@ -20,7 +21,9 @@ spec:
       protocol: TCP
       targetPort: {{ $name }}
       name: {{ $name }}
+      nodePort: {{ $port }}
   {{- end}}
   selector:
     {{- include "pdp.selectorLabels" . | nindent 4 }}
+  {{- end }}
 {{- end }}

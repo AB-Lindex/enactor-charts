@@ -1,6 +1,7 @@
 {{- $root := . }}
 {{- $basepath := .Template.BasePath }}
 {{- range $pos := .Values.pdp.instances }}
+  {{- if eq .platform $root.Values.pdp.platform }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -183,4 +184,5 @@ spec:
         resources:
           requests:
             storage: {{ $root.Values.pdp.persistence.size }}
+  {{- end }}
 {{- end }}

@@ -90,6 +90,8 @@ pdp:
   securityContext: null
   nodeName: null
   nodeSelector: {}
+  serviceType: ClusterIP
+  platform: k8s
 
 pdc:
   name: pdc
