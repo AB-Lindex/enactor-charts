@@ -16,12 +16,17 @@ spec:
       targetPort: pdp-http
       protocol: TCP
       name: http
+      {{- if eq $root.Values.pdp.serviceType "NodePort" }}
+      nodePort: {{ $root.Values.pdp.nodePort }}
+      {{- end }}
   {{- range $name,$port := $root.Values.pdp.ports }}
     - port: {{ $port }}
       protocol: TCP
       targetPort: {{ $name }}
       name: {{ $name }}
+      {{- if eq $root.Values.pdp.serviceType "NodePort" }}
       nodePort: {{ $port }}
+      {{- end }}
   {{- end}}
   selector:
     {{- include "pdp.selectorLabels" . | nindent 4 }}

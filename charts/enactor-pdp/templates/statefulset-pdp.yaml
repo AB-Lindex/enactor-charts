@@ -85,10 +85,6 @@ spec:
               name: pdp-http
             - containerPort: 53311
               name: pdp-https
-#            - containerPort: 39847
-#              name: jmx
-#            - containerPort: 39848
-#              name: pdp-jmx
             - containerPort: 8080
               name: health
           {{- range $name,$port := $root.Values.pdp.ports }}
