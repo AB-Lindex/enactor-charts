@@ -1,7 +1,7 @@
 {{- $root := . }}
 {{- $basepath := .Template.BasePath }}
 {{- range $pos := .Values.pdp.instances }}
-  {{- if eq .platform $root.Values.pdp.platform }}
+  {{- if eq .platform $root.Values.global.platform }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet

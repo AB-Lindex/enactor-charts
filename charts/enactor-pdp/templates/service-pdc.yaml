@@ -1,5 +1,6 @@
 {{- $root := . }}
 {{- range $pos := .Values.pdc.instances }}
+  {{- if eq .platform $root.Values.global.platform }}
 ---
 apiVersion: v1
 kind: Service
@@ -8,20 +9,20 @@ metadata:
   labels:
     {{- include "pdc.selectorLabels" . | nindent 4 }}
 spec:
-  type: ClusterIP
+  type: {{ $root.Values.service.type }}
   ports:
     - port: 7776
       targetPort: pdc-7776
       protocol: TCP
       name: pdc-7776
-#     - port: 7775
-#       targetPort: pdc-7775
-#       protocol: TCP
-#       name: pdc-7775
+      {{- if eq $root.Values.service.type "NodePort" }}
+      nodePort: {{ .port }}
+      {{- end }}
     - port: 7777
       targetPort: pdc-7777
       protocol: TCP
       name: pdc-7777
   selector:
     {{- include "pdc.selectorLabels" . | nindent 4 }}
+  {{- end }}
 {{- end }}

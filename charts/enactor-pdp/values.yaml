@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  platform: k8s
+
 features:
   argocdSyncwaves:
     enabled: false
@@ -90,8 +93,6 @@ pdp:
   securityContext: null
   nodeName: null
   nodeSelector: {}
-  serviceType: ClusterIP
-  platform: k8s
 
 pdc:
   name: pdc

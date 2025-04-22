@@ -1,6 +1,7 @@
 {{- $root := . }}
 {{- $basepath := .Template.BasePath }}
 {{- range $pos := .Values.pdc.instances }}
+  {{- if eq .platform $root.Values.global.platform }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -63,12 +64,6 @@ spec:
           image: {{ include "image" $root.Values.pdc.image }}
           imagePullPolicy: {{ $root.Values.pdc.image.pullPolicy  }}
           ports:
-            #- containerPort: 8080
-            #  name: pdc-http
-            #- containerPort: 2099
-            #  name: pdc-2099
-            #- containerPort: 7775
-            #  name: pdc-7775
             - containerPort: 7776
               name: pdc-7776
             - containerPort: 7777
@@ -116,4 +111,5 @@ spec:
         resources:
           requests:
             storage: {{ $root.Values.pdc.persistence.size }}
+  {{- end }}
 {{- end }}

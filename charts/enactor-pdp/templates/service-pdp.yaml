@@ -1,7 +1,7 @@
 {{- $root := . }}
 {{- $basepath := .Template.BasePath }}
 {{- range $pos := .Values.pdp.instances }}
-  {{- if eq .platform $root.Values.pdp.platform }}
+  {{- if eq .platform $root.Values.global.platform }}
 ---
 apiVersion: v1
 kind: Service
@@ -10,21 +10,21 @@ metadata:
   labels:
     {{- include "pdp.selectorLabels" . | nindent 4 }}
 spec:
-  type: {{ $root.Values.pdp.serviceType }}
+  type: {{ $root.Values.service.type }}
   ports:
     - port: 39901
       targetPort: pdp-http
       protocol: TCP
       name: http
-      {{- if eq $root.Values.pdp.serviceType "NodePort" }}
-      nodePort: {{ $root.Values.pdp.nodePort }}
+      {{- if eq $root.Values.service.type "NodePort" }}
+      nodePort: {{ .port }}
       {{- end }}
   {{- range $name,$port := $root.Values.pdp.ports }}
     - port: {{ $port }}
       protocol: TCP
       targetPort: {{ $name }}
       name: {{ $name }}
-      {{- if eq $root.Values.pdp.serviceType "NodePort" }}
+      {{- if eq $root.Values.service.type "NodePort" }}
       nodePort: {{ $port }}
       {{- end }}
   {{- end}}
