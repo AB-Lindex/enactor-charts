@@ -1,7 +1,7 @@
 {{- $root := . }}
 {{- $basepath := .Template.BasePath }}
 {{- range $pos := .Values.pdp.instances }}
-  {{- if eq .platform $root.Values.global.platform }}
+  {{- if or (not .platform) (eq .platform $root.Values.global.platform) }}
 ---
 apiVersion: v1
 kind: Service
