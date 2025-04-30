@@ -151,8 +151,6 @@ spec:
               mountPath: /enactor/app/home
             - name: truststore
               mountPath: /enactor/app/custom/trust
-            - name: keystore
-              mountPath: /enactor/app/custom/key
 
         {{ if $root.Values.pdp.extraContainers }}
         {{- toYaml $root.Values.pdp.extraContainers | nindent 8 }}
@@ -162,11 +160,6 @@ spec:
         - name: truststore
           secret:
             secretName: {{ $root.Values.truststore.certSecret }}
-        - name: keystore
-          secret:
-            defaultMode: 420
-            optional: true
-            secretName: {{ $root.Values.keystore.certSecret }}
         {{- if $root.Values.pdp.extraConfigmapMounts }}
         {{- toYaml $root.Values.pdp.extraConfigmapMounts | nindent 8 }}
         {{- end }}
