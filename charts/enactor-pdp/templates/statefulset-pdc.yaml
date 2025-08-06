@@ -63,6 +63,9 @@ spec:
         - name: pdc
           image: {{ include "image" $root.Values.pdc.image }}
           imagePullPolicy: {{ $root.Values.pdc.image.pullPolicy  }}
+          {{- if $root.Values.pdc.container.securityContext }}
+          securityContext: {{- toYaml $root.Values.pdc.container.securityContext | nindent 12 }}
+          {{- end }}
           ports:
             - containerPort: 7776
               name: pdc-7776

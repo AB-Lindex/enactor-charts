@@ -80,6 +80,9 @@ spec:
         - name: pdp
           image: {{ include "image" $root.Values.pdp.image }}
           imagePullPolicy: {{ $root.Values.pdp.image.pullPolicy  }}
+          {{- if $root.Values.pdp.container.securityContext }}
+          securityContext: {{- toYaml $root.Values.pdp.container.securityContext | nindent 12 }}
+          {{- end }}
           ports:
             - containerPort: 39901
               name: pdp-http
