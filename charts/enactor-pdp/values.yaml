@@ -90,6 +90,7 @@ pdp:
   securityContext: null
   nodeName: null
   nodeSelector: {}
+  container: {}
 
 pdc:
   name: pdc
@@ -120,6 +121,7 @@ pdc:
   securityContext: null
   nodeName: null
   nodeSelector: {}
+  container: {}
 
 extraObjects: []
 
