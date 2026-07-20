@@ -214,17 +214,28 @@ jdbc:mysql://{{ .Values.mariadb.fullnameOverride }}:3306/{{ .Values.mariadb.auth
 
 {{- define "db.env" -}}
 - name: ENACTOR_DB_USER
-  value: enactor
+  value: {{ .Values.mariadb.auth.username | quote }}
 - name: ENACTOR_DB_PASS
   valueFrom:
     secretKeyRef:
-      name: em-secrets
+      name: {{ .Values.mariadb.auth.existingSecret }}
       key: mariadb-password
 {{- end }}
 
 
-{{- define "primary.ingress" -}}
-{{- range .Values.ingress.hosts -}}
-{{- .host -}}
+{{/*
+Renders a complete tree, even values that contain templates.
+Used by extra-manifests.yaml for .Values.extraObjects.
+*/}}
+{{- define "render" -}}
+  {{- if typeIs "string" .value }}
+    {{- tpl .value .context }}
+  {{ else }}
+    {{- tpl (.value | toYaml) .context }}
+  {{- end }}
 {{- end -}}
+
+
+{{- define "primary.ingress" -}}
+{{- .Values.ingress.host -}}
 {{- end }}

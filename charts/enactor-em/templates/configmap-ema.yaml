@@ -7,5 +7,5 @@ metadata:
 data:
 #  ENACTOR_JMX_APPLICATIONID: "AppServer"
   ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: {{ include "emp.name" . }}
-  ENACTOR_TOMCAT_HTTP_DISABLED: "true"
+  ENACTOR_TOMCAT_HTTP_DISABLED: "false"
   JXMX: "768m"

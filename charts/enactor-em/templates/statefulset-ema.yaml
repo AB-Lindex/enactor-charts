@@ -74,28 +74,24 @@ spec:
                 name: config-common
             - configMapRef:
                 name: config-{{ include "ema.name" . }}
+            - secretRef:
+                name: secret-common
           ports:
             - name: http
               containerPort: 39830
               protocol: TCP
-            - name: https
-              containerPort: 52240
-              protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: https
-              scheme: HTTPS
+              path: /WebMaintenance/
+              port: http
           readinessProbe:
             httpGet:
-              path: /
-              port: https
-              scheme: HTTPS
+              path: /WebMaintenance/
+              port: http
           startupProbe:
             httpGet:
-              path: /
-              port: https
-              scheme: HTTPS
+              path: /WebMaintenance/
+              port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 20
@@ -121,9 +117,8 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: apphome
-        annotations:
-          volume.beta.kubernetes.io/storage-class: {{ .Values.storage.storageClass }}
       spec:
+        storageClassName: {{ .Values.storage.storageClass }}
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
