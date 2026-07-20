@@ -4,7 +4,7 @@
 
 image:
   # Registry + repository prefix; the per-component name is appended to this.
-  repository: crsdcshared.azurecr.io/pos
+  repository: lindexacrdev.azurecr.io/commerce/enactorpos
   ema: lindexextension-ema
   emp: lindexextension-emp
   ems: lindexextension-ems
@@ -13,7 +13,7 @@ image:
   tag: latest
 
 imagePullSecrets:
-  - name: crsdcshared
+  - name: pullsecret
 nameOverride: ""
 fullnameOverride: ""
 
@@ -28,8 +28,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  # The EM images run as uid/gid 1100 (tomcat_admin/tomcat), so the mounted
+  # apphome PVC must be group-owned by 1100 for the app to write to it.
+  fsGroup: 1100
 
 securityContext: {}
   # capabilities:

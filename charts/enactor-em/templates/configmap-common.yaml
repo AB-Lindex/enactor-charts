@@ -179,11 +179,13 @@ data:
   ENACTOR_WEBSERVICES_ENABLESTANDARDSOAPHEADERS: "true"
   ENACTOR_WEBSHOP_SOLRURL: http://solr:39846/solr/enactor
   JAVA_COUNTRY: SE
-  JAVA_HOME: /enactor/shared/java/jdk11.0.7_10
   JAVA_LANGUAGE: en
   JMPS: 512m
-  JRE_HOME: /enactor/shared/java/jdk11.0.7_10
   JTIMEZONE: Europe/Stockholm
   JXMS: 512m
   JXMX: 768m
   LOG4J_FORMAT_MSG_NO_LOOKUPS: "true"
+  # EM container entrypoint runs wait-for-it.sh against this host:port before
+  # starting, to hold until the database is reachable.
+  WAITFORIT_HOST: {{ .Values.mariadb.fullnameOverride | quote }}
+  WAITFORIT_PORT: "3306"

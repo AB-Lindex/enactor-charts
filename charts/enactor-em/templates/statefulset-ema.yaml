@@ -80,20 +80,26 @@ spec:
             - name: http
               containerPort: 39830
               protocol: TCP
+          # WebMaintenance responds with an auth/session redirect chain that an
+          # httpGet probe would follow past its 10-redirect limit and fail, so
+          # (as enactor-pdp does) we check the port is listening instead.
           livenessProbe:
-            httpGet:
-              path: /WebMaintenance/
+            tcpSocket:
               port: http
+            timeoutSeconds: 5
+            periodSeconds: 15
+            failureThreshold: 5
           readinessProbe:
-            httpGet:
-              path: /WebMaintenance/
+            tcpSocket:
               port: http
+            timeoutSeconds: 5
+            periodSeconds: 15
+            failureThreshold: 5
           startupProbe:
-            httpGet:
-              path: /WebMaintenance/
+            tcpSocket:
               port: http
             periodSeconds: 10
-            failureThreshold: 10
+            failureThreshold: 30
             initialDelaySeconds: 20
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
