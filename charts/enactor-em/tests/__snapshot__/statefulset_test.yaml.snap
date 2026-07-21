@@ -1,0 +1,675 @@
+matches the rendered snapshot:
+  1: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      labels:
+        app.kubernetes.io/instance: em
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: ema
+        app.kubernetes.io/version: "1.0"
+        helm.sh/chart: enactor-em-0.4.0
+      name: ema
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: em
+          app.kubernetes.io/name: ema
+      serviceName: ema
+      template:
+        metadata:
+          annotations:
+            checksum/common: 8065e49a248ac7349ef5f6430c3ac76b9a7b3d1756c39019a17b87f54254a12f
+            checksum/ema: 7ed7532e09196452043619fcfdc6689626bbe7d0ff4c5e7cee753c18336c420c
+          labels:
+            app.kubernetes.io/instance: em
+            app.kubernetes.io/name: ema
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - env:
+                - name: ENACTOR_DB_USER
+                  value: enactor
+                - name: ENACTOR_DB_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: mariadb-password
+                      name: em-secrets
+                - name: ENACTOR_JMX_SERVERHOSTNAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_JMX_APPLICATIONID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              envFrom:
+                - configMapRef:
+                    name: config-common
+                - configMapRef:
+                    name: config-ema
+                - secretRef:
+                    name: secret-common
+              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-ema:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 5
+                periodSeconds: 15
+                tcpSocket:
+                  port: http
+                timeoutSeconds: 5
+              name: ema
+              ports:
+                - containerPort: 39830
+                  name: http
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 5
+                periodSeconds: 15
+                tcpSocket:
+                  port: http
+                timeoutSeconds: 5
+              resources: {}
+              securityContext: {}
+              startupProbe:
+                failureThreshold: 30
+                initialDelaySeconds: 20
+                periodSeconds: 10
+                tcpSocket:
+                  port: http
+              volumeMounts:
+                - mountPath: /enactor/app/home
+                  name: apphome
+          imagePullSecrets:
+            - name: pullsecret
+          initContainers:
+            - command:
+                - sh
+                - -c
+                - |-
+                  sleep $INTERVAL;
+                  echo -e "Checking for the availability of '$HOST' on port $PORT";
+                  while ! nc -z $HOST $PORT;
+                    do sleep $INTERVAL;
+                    printf "-";
+                  done;
+                  echo -e "  >> Service '$HOST' has started";
+              env:
+                - name: HOST
+                  value: ems
+                - name: PORT
+                  value: "39833"
+                - name: INTERVAL
+                  value: "2"
+              image: busybox:1.31
+              imagePullPolicy: IfNotPresent
+              name: depends-on
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 200Mi
+                requests:
+                  cpu: 10m
+                  memory: 20Mi
+              securityContext: {}
+          securityContext:
+            fsGroup: 1100
+          serviceAccountName: ema
+          terminationGracePeriodSeconds: 300
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 1
+        type: RollingUpdate
+      volumeClaimTemplates:
+        - metadata:
+            name: apphome
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 25Gi
+            storageClassName: test-sc
+  2: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      labels:
+        app.kubernetes.io/instance: em
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: emp
+        app.kubernetes.io/version: "1.0"
+        helm.sh/chart: enactor-em-0.4.0
+      name: emp
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: em
+          app.kubernetes.io/name: emp
+      serviceName: emp
+      template:
+        metadata:
+          annotations:
+            checksum/common: 8065e49a248ac7349ef5f6430c3ac76b9a7b3d1756c39019a17b87f54254a12f
+            checksum/emp: 0222118a14411b86273c7e0c34840ac48ea809c7abd361411399b818fb33da09
+          labels:
+            app.kubernetes.io/instance: em
+            app.kubernetes.io/name: emp
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - env:
+                - name: ENACTOR_DB_USER
+                  value: enactor
+                - name: ENACTOR_DB_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: mariadb-password
+                      name: em-secrets
+                - name: ENACTOR_JMX_SERVERHOSTNAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_JMX_APPLICATIONID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              envFrom:
+                - configMapRef:
+                    name: config-common
+                - configMapRef:
+                    name: config-emp
+                - secretRef:
+                    name: secret-common
+              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-emp:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                httpGet:
+                  path: /WebCore/
+                  port: http
+              name: emp
+              ports:
+                - containerPort: 39832
+                  name: http
+                  protocol: TCP
+              readinessProbe:
+                httpGet:
+                  path: /WebCore/
+                  port: http
+              resources: {}
+              securityContext: {}
+              startupProbe:
+                failureThreshold: 10
+                httpGet:
+                  path: /WebCore/
+                  port: http
+                initialDelaySeconds: 20
+                periodSeconds: 10
+              volumeMounts:
+                - mountPath: /enactor/app/home
+                  name: apphome
+          imagePullSecrets:
+            - name: pullsecret
+          initContainers:
+            - command:
+                - sh
+                - -c
+                - |-
+                  sleep $INTERVAL;
+                  echo -e "Checking for the availability of '$HOST' on port $PORT";
+                  while ! nc -z $HOST $PORT;
+                    do sleep $INTERVAL;
+                    printf "-";
+                  done;
+                  echo -e "  >> Service '$HOST' has started";
+              env:
+                - name: HOST
+                  value: em-db
+                - name: PORT
+                  value: "3306"
+                - name: INTERVAL
+                  value: "2"
+              image: busybox:1.31
+              imagePullPolicy: IfNotPresent
+              name: depends-on
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 200Mi
+                requests:
+                  cpu: 10m
+                  memory: 20Mi
+              securityContext: {}
+          securityContext:
+            fsGroup: 1100
+          serviceAccountName: emp
+          terminationGracePeriodSeconds: 300
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 1
+        type: RollingUpdate
+      volumeClaimTemplates:
+        - metadata:
+            name: apphome
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 25Gi
+            storageClassName: test-sc
+  3: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      labels:
+        app.kubernetes.io/instance: em
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: emr
+        app.kubernetes.io/version: "1.0"
+        helm.sh/chart: enactor-em-0.4.0
+      name: emr
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: em
+          app.kubernetes.io/name: emr
+      serviceName: emr
+      template:
+        metadata:
+          annotations:
+            checksum/common: 8065e49a248ac7349ef5f6430c3ac76b9a7b3d1756c39019a17b87f54254a12f
+            checksum/emr: e5cb74bdee4f3b1a6f52af7a9f7231b3994fc7ccd2378b7227b31237dcca28f2
+          labels:
+            app.kubernetes.io/instance: em
+            app.kubernetes.io/name: emr
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - env:
+                - name: ENACTOR_DB_USER
+                  value: enactor
+                - name: ENACTOR_DB_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: mariadb-password
+                      name: em-secrets
+                - name: ENACTOR_JMX_SERVERHOSTNAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_JMX_APPLICATIONID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              envFrom:
+                - configMapRef:
+                    name: config-common
+                - configMapRef:
+                    name: config-emr
+                - secretRef:
+                    name: secret-common
+              image: lindexacrdev.azurecr.io/enactorstandard/lin/emr:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                httpGet:
+                  path: /WebReports/
+                  port: http
+              name: emr
+              ports:
+                - containerPort: 39831
+                  name: http
+                  protocol: TCP
+              readinessProbe:
+                httpGet:
+                  path: /WebReports/
+                  port: http
+              resources: {}
+              securityContext: {}
+              startupProbe:
+                failureThreshold: 10
+                httpGet:
+                  path: /WebReports/
+                  port: http
+                initialDelaySeconds: 20
+                periodSeconds: 20
+              volumeMounts:
+                - mountPath: /enactor/app/home
+                  name: apphome
+          imagePullSecrets:
+            - name: pullsecret
+          initContainers:
+            - command:
+                - sh
+                - -c
+                - |-
+                  sleep $INTERVAL;
+                  echo -e "Checking for the availability of '$HOST' on port $PORT";
+                  while ! nc -z $HOST $PORT;
+                    do sleep $INTERVAL;
+                    printf "-";
+                  done;
+                  echo -e "  >> Service '$HOST' has started";
+              env:
+                - name: HOST
+                  value: emp
+                - name: PORT
+                  value: "39832"
+                - name: INTERVAL
+                  value: "2"
+              image: busybox:1.31
+              imagePullPolicy: IfNotPresent
+              name: depends-on
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 200Mi
+                requests:
+                  cpu: 10m
+                  memory: 20Mi
+              securityContext: {}
+          securityContext:
+            fsGroup: 1100
+          serviceAccountName: emr
+          terminationGracePeriodSeconds: 300
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 1
+        type: RollingUpdate
+      volumeClaimTemplates:
+        - metadata:
+            name: apphome
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 25Gi
+            storageClassName: test-sc
+  4: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      labels:
+        app.kubernetes.io/instance: em
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: ems
+        app.kubernetes.io/version: "1.0"
+        helm.sh/chart: enactor-em-0.4.0
+      name: ems
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: em
+          app.kubernetes.io/name: ems
+      serviceName: ems
+      template:
+        metadata:
+          annotations:
+            checksum/common: 8065e49a248ac7349ef5f6430c3ac76b9a7b3d1756c39019a17b87f54254a12f
+            checksum/ems: 9b204d52515177f46820ff208a115d394737a406ae82f8641bbce87ddcf7d233
+          labels:
+            app.kubernetes.io/instance: em
+            app.kubernetes.io/name: ems
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - env:
+                - name: ENACTOR_DB_USER
+                  value: enactor
+                - name: ENACTOR_DB_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: mariadb-password
+                      name: em-secrets
+                - name: ENACTOR_JMX_SERVERHOSTNAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_JMX_APPLICATIONID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              envFrom:
+                - configMapRef:
+                    name: config-common
+                - configMapRef:
+                    name: config-ems
+                - secretRef:
+                    name: secret-common
+              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-ems:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                httpGet:
+                  path: /axis2/
+                  port: http
+              name: ems
+              ports:
+                - containerPort: 39833
+                  name: http
+                  protocol: TCP
+              readinessProbe:
+                httpGet:
+                  path: /axis2/
+                  port: http
+              resources: {}
+              securityContext: {}
+              startupProbe:
+                failureThreshold: 10
+                httpGet:
+                  path: /axis2/
+                  port: http
+                initialDelaySeconds: 20
+                periodSeconds: 20
+              volumeMounts:
+                - mountPath: /enactor/app/home
+                  name: apphome
+          imagePullSecrets:
+            - name: pullsecret
+          initContainers:
+            - command:
+                - sh
+                - -c
+                - |-
+                  sleep $INTERVAL;
+                  echo -e "Checking for the availability of '$HOST' on port $PORT";
+                  while ! nc -z $HOST $PORT;
+                    do sleep $INTERVAL;
+                    printf "-";
+                  done;
+                  echo -e "  >> Service '$HOST' has started";
+              env:
+                - name: HOST
+                  value: emp
+                - name: PORT
+                  value: "39832"
+                - name: INTERVAL
+                  value: "2"
+              image: busybox:1.31
+              imagePullPolicy: IfNotPresent
+              name: depends-on
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 200Mi
+                requests:
+                  cpu: 10m
+                  memory: 20Mi
+              securityContext: {}
+          securityContext:
+            fsGroup: 1100
+          serviceAccountName: ems
+          terminationGracePeriodSeconds: 300
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 1
+        type: RollingUpdate
+      volumeClaimTemplates:
+        - metadata:
+            name: apphome
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 25Gi
+            storageClassName: test-sc
+  5: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      labels:
+        app.kubernetes.io/instance: em
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: tms
+        app.kubernetes.io/version: "1.0"
+        helm.sh/chart: enactor-em-0.4.0
+      name: tms
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: em
+          app.kubernetes.io/name: tms
+      serviceName: tms
+      template:
+        metadata:
+          annotations:
+            checksum/common: 8065e49a248ac7349ef5f6430c3ac76b9a7b3d1756c39019a17b87f54254a12f
+            checksum/tms: 4386e31941a0eb812e0eb6ce92c64791680f75c7d5c4272379cbef1be12d5a40
+          labels:
+            app.kubernetes.io/instance: em
+            app.kubernetes.io/name: tms
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - env:
+                - name: ENACTOR_DB_USER
+                  value: enactor
+                - name: ENACTOR_DB_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: mariadb-password
+                      name: em-secrets
+                - name: ENACTOR_JMX_SERVERHOSTNAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
+                - name: ENACTOR_JMX_APPLICATIONID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              envFrom:
+                - configMapRef:
+                    name: config-common
+                - configMapRef:
+                    name: config-tms
+                - secretRef:
+                    name: secret-common
+              image: lindexacrdev.azurecr.io/enactorstandard/lin/tms:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 5
+                periodSeconds: 15
+                tcpSocket:
+                  port: http
+                timeoutSeconds: 5
+              name: tms
+              ports:
+                - containerPort: 39888
+                  name: http
+                  protocol: TCP
+                - containerPort: 39851
+                  name: rmi
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 5
+                periodSeconds: 15
+                tcpSocket:
+                  port: http
+                timeoutSeconds: 5
+              resources: {}
+              securityContext: {}
+              startupProbe:
+                failureThreshold: 30
+                initialDelaySeconds: 20
+                periodSeconds: 10
+                tcpSocket:
+                  port: http
+              volumeMounts:
+                - mountPath: /enactor/app/home
+                  name: apphome
+          imagePullSecrets:
+            - name: pullsecret
+          initContainers:
+            - command:
+                - sh
+                - -c
+                - |-
+                  sleep $INTERVAL;
+                  echo -e "Checking for the availability of '$HOST' on port $PORT";
+                  while ! nc -z $HOST $PORT;
+                    do sleep $INTERVAL;
+                    printf "-";
+                  done;
+                  echo -e "  >> Service '$HOST' has started";
+              env:
+                - name: HOST
+                  value: emp
+                - name: PORT
+                  value: "39832"
+                - name: INTERVAL
+                  value: "2"
+              image: busybox:1.31
+              imagePullPolicy: IfNotPresent
+              name: depends-on
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 200Mi
+                requests:
+                  cpu: 10m
+                  memory: 20Mi
+              securityContext: {}
+          securityContext:
+            fsGroup: 1100
+          serviceAccountName: tms
+          terminationGracePeriodSeconds: 300
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 1
+        type: RollingUpdate
+      volumeClaimTemplates:
+        - metadata:
+            name: apphome
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 25Gi
+            storageClassName: test-sc

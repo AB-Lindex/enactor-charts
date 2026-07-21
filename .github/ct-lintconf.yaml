@@ -1,0 +1,25 @@
+# yamllint config used by `ct lint`. Deliberately lenient: it silences cosmetic
+# style rules (trailing spaces, line length, indentation, comment formatting) that
+# pre-exist across the charts, while keeping the checks that catch real mistakes —
+# duplicate keys.
+rules:
+  braces: disable
+  brackets: disable
+  colons: disable
+  commas: disable
+  comments: disable
+  comments-indentation: disable
+  document-start: disable
+  document-end: disable
+  empty-lines: disable
+  empty-values: disable
+  hyphens: disable
+  indentation: disable
+  key-duplicates: enable
+  line-length: disable
+  new-line-at-end-of-file: disable
+  new-lines: disable
+  octal-values: disable
+  quoted-strings: disable
+  trailing-spaces: disable
+  truthy: disable

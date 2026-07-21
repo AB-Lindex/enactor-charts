@@ -1,0 +1,30 @@
+suite: enactor-em services
+templates:
+  - templates/services.yaml
+release:
+  name: em
+  namespace: em
+set:
+  dns.domain: test.example
+tests:
+  - it: renders one Service per component
+    asserts:
+      - hasDocuments:
+          count: 5
+
+  - it: emp Service still exposes the jmx ports from network.emp
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.ports
+          content:
+            name: jmx4
+            port: 39851
+            targetPort: jmx4
+            protocol: TCP
+
+  - it: matches the rendered snapshot
+    asserts:
+      - matchSnapshot: {}
