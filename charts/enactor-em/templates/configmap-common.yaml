@@ -125,9 +125,9 @@ data:
   ENACTOR_SERVER_EMAPP_URL_BASE: {{ include "ema.http" . }}
   ENACTOR_SERVER_EMPDP_URL_BASE: {{ include "ems.http" . }}
   ENACTOR_SERVER_EMPROC_URL_BASE: {{ include "emp.http" . }}
-  ENACTOR_SERVER_EMREPORT_HOST: em-reports
-  ENACTOR_SERVER_EMREPORT_HTTPPORT: "39831"
-  ENACTOR_SERVER_EMREPORTS_URL_BASE: http://em-reports:39831
+  ENACTOR_SERVER_EMREPORT_HOST: {{ include "emr.name" . }}
+  ENACTOR_SERVER_EMREPORT_HTTPPORT: {{ include "emr.http.port" . | quote }}
+  ENACTOR_SERVER_EMREPORTS_URL_BASE: {{ include "emr.http" . }}
   ENACTOR_SERVER_EMWS_URL_BASE: {{ include "ems.http" . }}
   ENACTOR_SERVER_GIFTCARDAUTH1_URL_BASE: http://em-cardauth:39856
   ENACTOR_SERVER_GIFTCARDAUTH2_URL_BASE: http://em-cardauth:39856
@@ -156,14 +156,14 @@ data:
   ENACTOR_SERVER_PMWS_URL_BASE: http://localhost:8080
   ENACTOR_SERVER_PTF_LIVE_URL: pipreprod.fintrax.com:443/pi_public_V2/service.asmx
   ENACTOR_SERVER_PTF_TEST_URL: pipreprod.fintrax.com:443/pi_public_V2/service.asmx
-  ENACTOR_SERVER_REPORTS_HOST: em-reports
-  ENACTOR_SERVER_REPORTS_HTTPPORT: "39831"
+  ENACTOR_SERVER_REPORTS_HOST: {{ include "emr.name" . }}
+  ENACTOR_SERVER_REPORTS_HTTPPORT: {{ include "emr.http.port" . | quote }}
   ENACTOR_SERVER_RESTAURANTMOBILESAAS_HOST: can
   ENACTOR_SERVER_RESTAURANTMOBILESAAS_HTTPPORT: "39866"
   ENACTOR_SERVER_SOLR_HOST: solr
   ENACTOR_SERVER_SOLR_HTTPPORT: "39846"
   ENACTOR_SERVER_SOLR_URL_BASE: http://solr:39846
-  ENACTOR_SERVER_TMS_URL_BASE: http://localhost:39888
+  ENACTOR_SERVER_TMS_URL_BASE: {{ include "tms.http" . }}
   ENACTOR_SERVER_WS_HOST: {{ include "ems.name" . }}
   ENACTOR_SERVER_WS_HTTPPORT: {{ include "ems.http.port" . | quote }}
   ENACTOR_SERVER_WS_SECUREHTTPPORT: {{ include "ems.http.port" . | quote }}
