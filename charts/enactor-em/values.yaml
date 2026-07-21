@@ -3,15 +3,11 @@
 # Declare variables to be passed into your templates.
 
 image:
-  # Registry + repository prefix; the per-component name is appended to this.
+  # Registry + repository prefix; the per-component image name (components.<c>.image)
+  # is appended to this — or to stdRepository when components.<c>.stdRepo is true.
   repository: lindexacrdev.azurecr.io/commerce/enactorpos
-  ema: lindexextension-ema
-  emp: lindexextension-emp
-  ems: lindexextension-ems
   # TMS/EMR live under a different registry root than ema/emp/ems.
   stdRepository: lindexacrdev.azurecr.io/enactorstandard/lin
-  tms: tms
-  emr: emr
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
@@ -66,6 +62,143 @@ network:
     rmi: 39851
   emr:
     http: 39831
+
+# Per-component definitions. The generic templates (statefulset.yaml, services.yaml,
+# serviceaccounts.yaml) range over this map, one StatefulSet/Service/ServiceAccount
+# per entry. Only the values that vary between components live here; everything else
+# is inlined once in statefulset.yaml. Port numbers still come from `network` above.
+#   image       - image name appended to image.repository (or image.stdRepository if stdRepo)
+#   stdRepo     - true selects image.stdRepository instead of image.repository
+#   dependsOn   - init-container wait target: either {component: <name>} (waits on that
+#                 component's http port) or a literal {service: <name>, port: <n>}
+#   containerPorts - port names (keyed into network.<component>) to expose as containerPorts
+#   probes      - raw liveness/readiness/startup probe blocks, rendered verbatim
+components:
+  ema:
+    image: lindexextension-ema
+    dependsOn:
+      component: ems
+    containerPorts:
+      - http
+    probes:
+      # WebMaintenance responds with an auth/session redirect chain that an
+      # httpGet probe would follow past its 10-redirect limit and fail, so
+      # (as enactor-pdp does) we check the port is listening instead.
+      livenessProbe:
+        tcpSocket:
+          port: http
+        timeoutSeconds: 5
+        periodSeconds: 15
+        failureThreshold: 5
+      readinessProbe:
+        tcpSocket:
+          port: http
+        timeoutSeconds: 5
+        periodSeconds: 15
+        failureThreshold: 5
+      startupProbe:
+        tcpSocket:
+          port: http
+        periodSeconds: 10
+        failureThreshold: 30
+        initialDelaySeconds: 20
+  emp:
+    image: lindexextension-emp
+    dependsOn:
+      service: em-db
+      port: 3306
+    containerPorts:
+      - http
+    probes:
+      livenessProbe:
+        httpGet:
+          path: /WebCore/
+          port: http
+      readinessProbe:
+        httpGet:
+          path: /WebCore/
+          port: http
+      startupProbe:
+        httpGet:
+          path: /WebCore/
+          port: http
+        periodSeconds: 10
+        failureThreshold: 10
+        initialDelaySeconds: 20
+  ems:
+    image: lindexextension-ems
+    dependsOn:
+      component: emp
+    containerPorts:
+      - http
+    probes:
+      livenessProbe:
+        httpGet:
+          path: /axis2/
+          port: http
+      readinessProbe:
+        httpGet:
+          path: /axis2/
+          port: http
+      startupProbe:
+        httpGet:
+          path: /axis2/
+          port: http
+        periodSeconds: 20
+        failureThreshold: 10
+        initialDelaySeconds: 20
+  tms:
+    stdRepo: true
+    image: tms
+    dependsOn:
+      component: emp
+    containerPorts:
+      - http
+      - rmi
+    probes:
+      # TMS has no healthcheck in the compose reference, so check the port
+      # is listening rather than guess a working URL (as ema does).
+      livenessProbe:
+        tcpSocket:
+          port: http
+        timeoutSeconds: 5
+        periodSeconds: 15
+        failureThreshold: 5
+      readinessProbe:
+        tcpSocket:
+          port: http
+        timeoutSeconds: 5
+        periodSeconds: 15
+        failureThreshold: 5
+      startupProbe:
+        tcpSocket:
+          port: http
+        periodSeconds: 10
+        failureThreshold: 30
+        initialDelaySeconds: 20
+  emr:
+    stdRepo: true
+    image: emr
+    dependsOn:
+      component: emp
+    containerPorts:
+      - http
+    probes:
+      livenessProbe:
+        httpGet:
+          path: /WebReports/
+          port: http
+      readinessProbe:
+        httpGet:
+          path: /WebReports/
+          port: http
+      startupProbe:
+        httpGet:
+          path: /WebReports/
+          port: http
+        periodSeconds: 20
+        failureThreshold: 10
+        initialDelaySeconds: 20
 
 dns:
   domain: my.fqdn.address

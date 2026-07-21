@@ -1,0 +1,105 @@
+suite: enactor-em statefulsets
+# The configmaps are listed so the checksum/* annotation includes in
+# statefulset.yaml resolve; each test scopes back to statefulset.yaml.
+templates:
+  - templates/statefulset.yaml
+  - templates/configmap-common.yaml
+  - templates/configmap-ema.yaml
+  - templates/configmap-emp.yaml
+  - templates/configmap-ems.yaml
+  - templates/configmap-tms.yaml
+  - templates/configmap-emr.yaml
+release:
+  name: em
+  namespace: em
+set:
+  storage.storageClass: test-sc
+  dns.domain: test.example
+tests:
+  - it: renders one StatefulSet per component
+    template: templates/statefulset.yaml
+    asserts:
+      - hasDocuments:
+          count: 5
+
+  - it: ema uses the commerce/enactorpos registry root
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "^lindexacrdev\\.azurecr\\.io/commerce/enactorpos/lindexextension-ema:"
+
+  - it: emr uses the enactorstandard/lin registry root (stdRepo)
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: emr
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "^lindexacrdev\\.azurecr\\.io/enactorstandard/lin/emr:"
+
+  - it: tms exposes both http and rmi container ports
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: tms
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: rmi
+            containerPort: 39851
+            protocol: TCP
+
+  - it: emp waits on the database before starting
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.template.spec.initContainers[0].env
+          content:
+            name: HOST
+            value: em-db
+      - contains:
+          path: spec.template.spec.initContainers[0].env
+          content:
+            name: PORT
+            value: "3306"
+
+  - it: ema waits on ems before starting
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - contains:
+          path: spec.template.spec.initContainers[0].env
+          content:
+            name: HOST
+            value: ems
+      - contains:
+          path: spec.template.spec.initContainers[0].env
+          content:
+            name: PORT
+            value: "39833"
+
+  - it: selector stays on the component name (immutable field must not drift)
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: ems
+    asserts:
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: ems
+
+  - it: matches the rendered snapshot
+    template: templates/statefulset.yaml
+    asserts:
+      - matchSnapshot: {}

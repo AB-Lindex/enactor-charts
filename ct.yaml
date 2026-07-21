@@ -1,0 +1,11 @@
+# chart-testing configuration (used by .github/workflows/ci.yml).
+target-branch: main
+# Add the bitnami repo so `helm dependency build` resolves the mariadb subchart
+# during lint.
+chart-repos:
+  - bitnami=https://charts.bitnami.com/bitnami
+# Maintainers are listed by name/company email, not GitHub usernames.
+validate-maintainers: false
+# Lenient yamllint rules — silence pre-existing cosmetic style noise, keep real checks.
+lint-conf: .github/ct-lintconf.yaml
+helm-extra-args: --timeout 600s
