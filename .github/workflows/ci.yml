@@ -23,7 +23,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
         with:
-          version: v3.16.4
+          version: v4.1.4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -49,8 +49,10 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
         with:
-          version: v3.16.4
+          version: v4.1.4
 
+      # helm 4 verifies plugins by default; --verify=false skips it (the flag does
+      # not exist on helm 3). helm-unittest 1.1.1 needs helm >= 3.18 (platformHooks).
       - name: Install helm-unittest plugin
         run: helm plugin install https://github.com/helm-unittest/helm-unittest --version v1.1.1 --verify=false
 

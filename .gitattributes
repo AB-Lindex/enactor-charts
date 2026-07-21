@@ -1,0 +1,12 @@
+# Force LF for all text files so Helm chart rendering is byte-identical on every
+# OS. Without this, a Windows CRLF checkout renders different ConfigMap bytes than
+# a Linux LF checkout, which changes the sha256 checksum/* pod annotations and
+# makes rendered manifests (and helm-unittest snapshots) nondeterministic.
+* text=auto eol=lf
+
+# Leave binary artifacts untouched (vendored subchart archives, images).
+*.tgz binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
