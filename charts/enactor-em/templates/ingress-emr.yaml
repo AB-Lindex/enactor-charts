@@ -1,10 +1,10 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.ingress.emr.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "ema.name" . }}
+  name: {{ include "emr.name" . }}
   labels:
-    {{- include "ema.labels" . | nindent 4 }}
+    {{- include "emr.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -15,11 +15,11 @@ spec:
     - host: {{ .Values.ingress.host | quote }}
       http:
         paths:
-          - path: {{ .Values.ingress.path }}
+          - path: {{ .Values.ingress.emr.path }}
             pathType: Prefix
             backend:
               service:
-                name: {{ include "ema.name" . }}
+                name: {{ include "emr.name" . }}
                 port:
                   name: http
 {{- end }}

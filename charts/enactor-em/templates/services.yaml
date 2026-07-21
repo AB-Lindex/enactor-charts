@@ -36,4 +36,30 @@ spec:
     {{- include "service.ports" .Values.network.ems | nindent 4 }}
   selector:
     {{- include "ems.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tms.name" . }}
+  labels:
+    {{- include "tms.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- include "service.ports" .Values.network.tms | nindent 4 }}
+  selector:
+    {{- include "tms.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "emr.name" . }}
+  labels:
+    {{- include "emr.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- include "service.ports" .Values.network.emr | nindent 4 }}
+  selector:
+    {{- include "emr.selectorLabels" . | nindent 4 }}
 

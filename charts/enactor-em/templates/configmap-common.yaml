@@ -11,7 +11,6 @@ data:
   EMREPORT: em-application
   ENACTOR_ACTIVEMQ_ENDPOINT: "tcp://activemq:61616"
   ENACTOR_AUTH_ALLOWED_CLIENT_IDS: client
-  ENACTOR_AXIS2_PASSWORD: SwC92FawnBWCYPWV
   ENACTOR_AXIS2_URL: {{ include "ems.http" . }}/axis2
   ENACTOR_AXIS2_USER: admin
   ENACTOR_BPEL_RUNTIMEURL: {{ include "emp.http" . }}/WebCore
@@ -54,8 +53,6 @@ data:
 #  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: em-processing
   ENACTOR_JMX_MANAGEMENTNODEPORT: {{ include "jmx.port" . | quote }}
 #  ENACTOR_JMX_SERVERHOSTNAME: localhost
-  ENACTOR_KEYSTORE_FILEPATH: /enactor/app/custom/keys
-  ENACTOR_KEYSTORE_PASSWORD: enactor
   ENACTOR_LIB_PATH: /enactor/shared/licence
   ENACTOR_MAIL_AUTH_FULLADDRESS: "false"
   ENACTOR_MESSAGESERVICE_MESSAGECOMPATIBILITYFORMAT: "1"
@@ -128,9 +125,9 @@ data:
   ENACTOR_SERVER_EMAPP_URL_BASE: {{ include "ema.http" . }}
   ENACTOR_SERVER_EMPDP_URL_BASE: {{ include "ems.http" . }}
   ENACTOR_SERVER_EMPROC_URL_BASE: {{ include "emp.http" . }}
-  ENACTOR_SERVER_EMREPORT_HOST: em-reports
-  ENACTOR_SERVER_EMREPORT_HTTPPORT: "39831"
-  ENACTOR_SERVER_EMREPORTS_URL_BASE: http://em-reports:39831
+  ENACTOR_SERVER_EMREPORT_HOST: {{ include "emr.name" . }}
+  ENACTOR_SERVER_EMREPORT_HTTPPORT: {{ include "emr.http.port" . | quote }}
+  ENACTOR_SERVER_EMREPORTS_URL_BASE: {{ include "emr.http" . }}
   ENACTOR_SERVER_EMWS_URL_BASE: {{ include "ems.http" . }}
   ENACTOR_SERVER_GIFTCARDAUTH1_URL_BASE: http://em-cardauth:39856
   ENACTOR_SERVER_GIFTCARDAUTH2_URL_BASE: http://em-cardauth:39856
@@ -159,14 +156,14 @@ data:
   ENACTOR_SERVER_PMWS_URL_BASE: http://localhost:8080
   ENACTOR_SERVER_PTF_LIVE_URL: pipreprod.fintrax.com:443/pi_public_V2/service.asmx
   ENACTOR_SERVER_PTF_TEST_URL: pipreprod.fintrax.com:443/pi_public_V2/service.asmx
-  ENACTOR_SERVER_REPORTS_HOST: em-reports
-  ENACTOR_SERVER_REPORTS_HTTPPORT: "39831"
+  ENACTOR_SERVER_REPORTS_HOST: {{ include "emr.name" . }}
+  ENACTOR_SERVER_REPORTS_HTTPPORT: {{ include "emr.http.port" . | quote }}
   ENACTOR_SERVER_RESTAURANTMOBILESAAS_HOST: can
   ENACTOR_SERVER_RESTAURANTMOBILESAAS_HTTPPORT: "39866"
   ENACTOR_SERVER_SOLR_HOST: solr
   ENACTOR_SERVER_SOLR_HTTPPORT: "39846"
   ENACTOR_SERVER_SOLR_URL_BASE: http://solr:39846
-  ENACTOR_SERVER_TMS_URL_BASE: http://localhost:39888
+  ENACTOR_SERVER_TMS_URL_BASE: {{ include "tms.http" . }}
   ENACTOR_SERVER_WS_HOST: {{ include "ems.name" . }}
   ENACTOR_SERVER_WS_HTTPPORT: {{ include "ems.http.port" . | quote }}
   ENACTOR_SERVER_WS_SECUREHTTPPORT: {{ include "ems.http.port" . | quote }}
@@ -176,20 +173,19 @@ data:
   ENACTOR_SERVICE_LOCATIONID: estateManager.enactor
   ENACTOR_SHARED: /enactor/shared
   ENACTOR_SOLR_INDEX_HOME: /enactor/shared/solr-6.0.0/server/solr
-  ENACTOR_TASK_SYSTEMPASSWORD: taskadmin
   ENACTOR_TASK_SYSTEMUSER: TASKADMIN
-  ENACTOR_TOMCAT_HTTP_DISABLED: "true"
   ENACTOR_WEBSERVICES_ENABLESTANDARDACCOUNTCREDENTIALSLOOKUP: "false"
   ENACTOR_WEBSERVICES_ENABLESTANDARDHTTPHEADERS: "true"
   ENACTOR_WEBSERVICES_ENABLESTANDARDSOAPHEADERS: "true"
   ENACTOR_WEBSHOP_SOLRURL: http://solr:39846/solr/enactor
   JAVA_COUNTRY: SE
-  JAVA_HOME: /enactor/shared/java/jdk11.0.7_10
   JAVA_LANGUAGE: en
   JMPS: 512m
-  JRE_HOME: /enactor/shared/java/jdk11.0.7_10
   JTIMEZONE: Europe/Stockholm
   JXMS: 512m
   JXMX: 768m
-  LIVE_KEYSTORE_FILEPATH: /enactor/app/custom/keys
   LOG4J_FORMAT_MSG_NO_LOOKUPS: "true"
+  # EM container entrypoint runs wait-for-it.sh against this host:port before
+  # starting, to hold until the database is reachable.
+  WAITFORIT_HOST: {{ .Values.mariadb.fullnameOverride | quote }}
+  WAITFORIT_PORT: "3306"

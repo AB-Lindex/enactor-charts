@@ -3,12 +3,21 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: nginx
+  # Registry + repository prefix; the per-component name is appended to this.
+  repository: lindexacrdev.azurecr.io/commerce/enactorpos
+  ema: lindexextension-ema
+  emp: lindexextension-emp
+  ems: lindexextension-ems
+  # TMS/EMR live under a different registry root than ema/emp/ems.
+  stdRepository: lindexacrdev.azurecr.io/enactorstandard/lin
+  tms: tms
+  emr: emr
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: latest
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: pullsecret
 nameOverride: ""
 fullnameOverride: ""
 
@@ -23,8 +32,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  # The EM images run as uid/gid 1100 (tomcat_admin/tomcat), so the mounted
+  # apphome PVC must be group-owned by 1100 for the app to write to it.
+  fsGroup: 1100
 
 securityContext: {}
   # capabilities:
@@ -36,46 +47,48 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: https
+  port: http
 
 network:
   ema:
     http: 39830
-    https: 52240
   emp:
     http: 39832
-    https: 52242
     jmx: 39847
     jmx1: 39848
     jmx2: 39849
     jmx3: 39850
     jmx4: 39851
-    jmx5: 52257
   ems:
     http: 39833
-    https: 52243
+  tms:
+    http: 39888
+    rmi: 39851
+  emr:
+    http: 39831
 
 dns:
   domain: my.fqdn.address
   ema: ema
   ems: ems
   emp: emp
+  tms: tms
+  emr: emr
 
 ingress:
+  # Exposes the EMA web UI (WebMaintenance). EMP/EMS are reached over cluster
+  # DNS. TLS is terminated by the nginx ingress controller, so no tls block is
+  # needed here. EMR's WebReports UI can be exposed on the same host via the
+  # `emr` sub-block below; it is independently toggleable.
   enabled: false
-  className: ""
+  className: nginx
+  host: store-qa.lindex.to
+  path: /WebMaintenance
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  # Exposes EMR's WebReports UI on the same host/className/annotations as above.
+  emr:
+    enabled: false
+    path: /WebReports
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -99,8 +112,16 @@ storage:
   size: "25Gi"
   storageClass: ""
 
+# Additional raw manifests to render as-is (e.g. per-environment SealedSecrets
+# for em-secrets / secret-common). See templates/extra-manifests.yaml.
+extraObjects: []
+
 # Thirdparty Configuration
 mariadb:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/mariadb
+    tag: 10.6.20-debian-12-r1
   fullnameOverride: "em-db"
   deploy: true
   auth:

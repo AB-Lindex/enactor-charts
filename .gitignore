@@ -1,2 +1,6 @@
 values
 .vscode
+
+# Downloaded Helm subchart dependencies (resolved via `helm dependency build`)
+charts/*/charts/
+*.tgz

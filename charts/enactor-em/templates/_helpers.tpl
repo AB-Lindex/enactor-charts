@@ -68,6 +68,48 @@ EM Processing - http-address
 http://{{ include "emp.name" . }}:{{ include "emp.http.port" . }}
 {{- end }}
 
+{{/*
+TMS name
+*/}}
+{{- define "tms.name" -}}
+tms
+{{- end }}
+
+{{/*
+EMR name
+*/}}
+{{- define "emr.name" -}}
+emr
+{{- end }}
+
+{{/*
+TMS - http-port
+*/}}
+{{- define "tms.http.port" -}}
+{{ .Values.network.tms.http }}
+{{- end }}
+
+{{/*
+EMR - http-port
+*/}}
+{{- define "emr.http.port" -}}
+{{ .Values.network.emr.http }}
+{{- end }}
+
+{{/*
+TMS - http-address
+*/}}
+{{- define "tms.http" -}}
+http://{{ include "tms.name" . }}:{{ include "tms.http.port" . }}
+{{- end }}
+
+{{/*
+EMR - http-address
+*/}}
+{{- define "emr.http" -}}
+http://{{ include "emr.name" . }}:{{ include "emr.http.port" . }}
+{{- end }}
+
 
 {{/*
 Expand the name of the chart.
@@ -148,6 +190,30 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
+{{/*
+tms - labels
+*/}}
+{{- define "tms.labels" -}}
+helm.sh/chart: {{ include "enactor-em.chart" . }}
+{{ include "tms.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+emr - labels
+*/}}
+{{- define "emr.labels" -}}
+helm.sh/chart: {{ include "enactor-em.chart" . }}
+{{ include "emr.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
 
 {{/*
 Selector labels - ema
@@ -170,6 +236,22 @@ Selector labels - ems
 */}}
 {{- define "ems.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "ems.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels - tms
+*/}}
+{{- define "tms.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "tms.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels - emr
+*/}}
+{{- define "emr.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "emr.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -214,17 +296,28 @@ jdbc:mysql://{{ .Values.mariadb.fullnameOverride }}:3306/{{ .Values.mariadb.auth
 
 {{- define "db.env" -}}
 - name: ENACTOR_DB_USER
-  value: enactor
+  value: {{ .Values.mariadb.auth.username | quote }}
 - name: ENACTOR_DB_PASS
   valueFrom:
     secretKeyRef:
-      name: em-secrets
+      name: {{ .Values.mariadb.auth.existingSecret }}
       key: mariadb-password
 {{- end }}
 
 
-{{- define "primary.ingress" -}}
-{{- range .Values.ingress.hosts -}}
-{{- .host -}}
+{{/*
+Renders a complete tree, even values that contain templates.
+Used by extra-manifests.yaml for .Values.extraObjects.
+*/}}
+{{- define "render" -}}
+  {{- if typeIs "string" .value }}
+    {{- tpl .value .context }}
+  {{ else }}
+    {{- tpl (.value | toYaml) .context }}
+  {{- end }}
 {{- end -}}
+
+
+{{- define "primary.ingress" -}}
+{{- .Values.ingress.host -}}
 {{- end }}

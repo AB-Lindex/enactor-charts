@@ -1,18 +1,18 @@
-{{ $image := printf "%s/%s" .Values.image.repository .Values.image.ema | clean }}
-{{ $name := include "ema.name" . }}
-{{ $dependency := dict "dependsOn" .Values.global.dependsOn "service" (include "ems.name" .) "port" (include "ems.http.port" .) }}
+{{ $image := printf "%s/%s" .Values.image.stdRepository .Values.image.tms | clean }}
+{{ $name := include "tms.name" . }}
+{{ $dependency := dict "dependsOn" .Values.global.dependsOn "service" (include "emp.name" .) "port" (include "emp.http.port" .) }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "ema.name" . }}
+  name: {{ include "tms.name" . }}
   labels:
-    {{- include "ema.labels" . | nindent 4 }}
+    {{- include "tms.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "ema.selectorLabels" . | nindent 6 }}
-  serviceName: {{ include "ema.name" . }}
+      {{- include "tms.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "tms.name" . }}
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
@@ -21,32 +21,28 @@ spec:
     metadata:
       annotations:
         checksum/common: {{ include (print $.Template.BasePath "/configmap-common.yaml") . | sha256sum }}
-        checksum/ema: {{ include (print $.Template.BasePath "/configmap-ema.yaml") . | sha256sum }}
+        checksum/tms: {{ include (print $.Template.BasePath "/configmap-tms.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "ema.selectorLabels" . | nindent 8 }}
+        {{- include "tms.selectorLabels" . | nindent 8 }}
     spec:
       automountServiceAccountToken: false
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ema.name" . }}
+      serviceAccountName: {{ include "tms.name" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       terminationGracePeriodSeconds: 300
-
-      # volumes:
-      #   - name: app-home
-      #     emptyDir: {}
 
       initContainers:
         {{ include "dependsOn" $dependency | nindent 8 }}
 
       containers:
-        - name: ema
+        - name: tms
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ $image }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -58,7 +54,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
-                  
+
             - name: ENACTOR_RMI_SERVERHOST
               valueFrom:
                 fieldRef:
@@ -68,21 +64,23 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-                
+
           envFrom:
             - configMapRef:
                 name: config-common
             - configMapRef:
-                name: config-{{ include "ema.name" . }}
+                name: config-{{ include "tms.name" . }}
             - secretRef:
                 name: secret-common
           ports:
             - name: http
-              containerPort: 39830
+              containerPort: 39888
               protocol: TCP
-          # WebMaintenance responds with an auth/session redirect chain that an
-          # httpGet probe would follow past its 10-redirect limit and fail, so
-          # (as enactor-pdp does) we check the port is listening instead.
+            - name: rmi
+              containerPort: 39851
+              protocol: TCP
+          # TMS has no healthcheck in the compose reference, so check the port
+          # is listening rather than guess a working URL (as ema does).
           livenessProbe:
             tcpSocket:
               port: http
@@ -129,4 +127,3 @@ spec:
         resources:
           requests:
             storage: {{ .Values.storage.size }}
-
