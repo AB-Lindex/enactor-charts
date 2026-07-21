@@ -76,14 +76,19 @@ dns:
   emr: emr
 
 ingress:
-  # Exposes the EMA web UI (WebMaintenance) only. EMP/EMS are reached over
-  # cluster DNS. TLS is terminated by the nginx ingress controller, so no
-  # tls block is needed here.
+  # Exposes the EMA web UI (WebMaintenance). EMP/EMS are reached over cluster
+  # DNS. TLS is terminated by the nginx ingress controller, so no tls block is
+  # needed here. EMR's WebReports UI can be exposed on the same host via the
+  # `emr` sub-block below; it is independently toggleable.
   enabled: false
   className: nginx
   host: store-qa.lindex.to
   path: /WebMaintenance
   annotations: {}
+  # Exposes EMR's WebReports UI on the same host/className/annotations as above.
+  emr:
+    enabled: false
+    path: /WebReports
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
