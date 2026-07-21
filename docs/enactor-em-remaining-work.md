@@ -80,9 +80,13 @@ Kubernetes, starting with store-qa, eventually replacing the Swarm EM.
 
 - `emp` and `ems` still use httpGet probes with a tight 1s timeout (they pass because `/WebCore/`
   and `/axis2/` respond fast, but could be hardened like ema's tcpSocket probes).
-- The chart was fixed in place, not refactored onto enactor-pdp's structure (three near-identical
-  StatefulSet/config templates remain). A future consolidation onto PDP's conventions is possible
-  but was explicitly deferred.
+- ~~The chart was fixed in place, not refactored (near-identical per-component StatefulSet
+  templates remain).~~ **Resolved 2026-07-21** (branch `feature/enactor-em-template-consolidation`,
+  chart 0.4.0): the five per-component StatefulSets were collapsed into one generic
+  `templates/statefulset.yaml` ranging over a new `components:` map in `values.yaml`; `services.yaml`
+  and `serviceaccounts.yaml` became single `range` templates. ConfigMaps were intentionally left
+  per-component (their `data:` is bespoke). Verified as a semantic no-op: at the same chart version,
+  rendered output is byte-for-byte identical across all resources.
 - `required.yaml` enforces `storage.storageClass` and `mariadb.primary.persistence.storageClass` —
   both must be set to a class that exists on the target cluster.
 

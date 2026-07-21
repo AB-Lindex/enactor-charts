@@ -1,65 +1,15 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "ema.name" . }}
-  labels:
-    {{- include "ema.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    {{- include "service.ports" .Values.network.ema | nindent 4 }}
-  selector:
-    {{- include "ema.selectorLabels" . | nindent 4 }}
+{{- range $name, $comp := .Values.components }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "emp.name" . }}
+  name: {{ $name }}
   labels:
-    {{- include "emp.labels" . | nindent 4 }}
+    {{- include (printf "%s.labels" $name) $ | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ $.Values.service.type }}
   ports:
-    {{- include "service.ports" .Values.network.emp | nindent 4 }}
+    {{- include "service.ports" (index $.Values.network $name) | nindent 4 }}
   selector:
-    {{- include "emp.selectorLabels" . | nindent 4 }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "ems.name" . }}
-  labels:
-    {{- include "ems.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    {{- include "service.ports" .Values.network.ems | nindent 4 }}
-  selector:
-    {{- include "ems.selectorLabels" . | nindent 4 }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "tms.name" . }}
-  labels:
-    {{- include "tms.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    {{- include "service.ports" .Values.network.tms | nindent 4 }}
-  selector:
-    {{- include "tms.selectorLabels" . | nindent 4 }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "emr.name" . }}
-  labels:
-    {{- include "emr.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    {{- include "service.ports" .Values.network.emr | nindent 4 }}
-  selector:
-    {{- include "emr.selectorLabels" . | nindent 4 }}
-
+    {{- include (printf "%s.selectorLabels" $name) $ | nindent 4 }}
+{{- end }}
