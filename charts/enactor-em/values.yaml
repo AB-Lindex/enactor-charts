@@ -8,6 +8,10 @@ image:
   ema: lindexextension-ema
   emp: lindexextension-emp
   ems: lindexextension-ems
+  # TMS/EMR live under a different registry root than ema/emp/ems.
+  stdRepository: lindexacrdev.azurecr.io/enactorstandard/lin
+  tms: tms
+  emr: emr
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
@@ -57,12 +61,19 @@ network:
     jmx4: 39851
   ems:
     http: 39833
+  tms:
+    http: 39888
+    rmi: 39851
+  emr:
+    http: 39831
 
 dns:
   domain: my.fqdn.address
   ema: ema
   ems: ems
   emp: emp
+  tms: tms
+  emr: emr
 
 ingress:
   # Exposes the EMA web UI (WebMaintenance) only. EMP/EMS are reached over
