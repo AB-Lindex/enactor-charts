@@ -14,6 +14,7 @@ data:
   ENACTOR_AXIS2_URL: {{ include "ems.http" . }}/axis2
   ENACTOR_AXIS2_USER: admin
   ENACTOR_BPEL_RUNTIMEURL: {{ include "emp.http" . }}/WebCore
+  ENACTOR_BROADCAST_DEFAULTDOWNLOADURL: http://{{ include "primary.ingress" . }}:{{ include "emp.http.port" . }}/WebCore/FileDownloadServlet
   ENACTOR_COMMON_APPLICATIONDATAHOME: /enactor/app/home/data
   ENACTOR_COMMON_APPLICATIONHOME: /enactor/app/home
   ENACTOR_COMMON_DATABASESCHEMA: enactorem

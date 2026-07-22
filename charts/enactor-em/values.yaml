@@ -235,7 +235,6 @@ enactor:
 ingress:
   # className, host and annotations are shared by all component ingresses below.
   # TLS is terminated by the nginx ingress controller, so no tls block is needed.
-  # EMP/EMS are reached over cluster DNS and have no ingress.
   className: nginx
   host: em.example.com
   annotations: {}
@@ -247,6 +246,16 @@ ingress:
   emr:
     enabled: false
     path: /WebReports
+  # Exposes the EMS WebRestApi (e.g. .../WebRestApi/rest/configuration/import/test.xml)
+  # on the same host/className/annotations.
+  ems:
+    enabled: false
+    path: /WebRestApi
+  # Exposes EMP's WebCore (e.g. file broadcast downloads) on the same
+  # host/className/annotations.
+  emp:
+    enabled: false
+    path: /WebCore
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
