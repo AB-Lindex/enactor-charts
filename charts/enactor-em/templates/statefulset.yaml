@@ -61,11 +61,6 @@ spec:
           env:
             {{ include "db.env" $ | nindent 12 }}
 
-            - name: ENACTOR_JMX_SERVERHOSTNAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-
           envFrom:
             - configMapRef:
                 name: config-common
