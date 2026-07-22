@@ -1,5 +1,5 @@
 {{- range $name, $comp := .Values.components }}
-{{- $repo := ternary $.Values.image.stdRepository $.Values.image.repository (default false $comp.stdRepo) }}
+{{- $repo := $comp.repository | default $.Values.image.repository }}
 {{- $image := printf "%s/%s" $repo $comp.image | clean }}
 {{- $svc := "" }}
 {{- $port := "" }}
@@ -65,16 +65,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
-
-            - name: ENACTOR_RMI_SERVERHOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-
-            - name: ENACTOR_JMX_APPLICATIONID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
 
           envFrom:
             - configMapRef:

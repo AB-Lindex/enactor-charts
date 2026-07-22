@@ -3,17 +3,19 @@
 # Declare variables to be passed into your templates.
 
 image:
-  # Registry + repository prefix; the per-component image name (components.<c>.image)
-  # is appended to this — or to stdRepository when components.<c>.stdRepo is true.
-  repository: lindexacrdev.azurecr.io/commerce/enactorpos
-  # TMS/EMR live under a different registry root than ema/emp/ems.
-  stdRepository: lindexacrdev.azurecr.io/enactorstandard/lin
+  # Default registry + repository prefix; the per-component image name
+  # (components.<c>.image) is appended to this. A component whose images live
+  # under a different registry root can override it with components.<c>.repository.
+  # Override with your own registry when installing.
+  repository: registry.example.com/enactor
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
 
-imagePullSecrets:
-  - name: pullsecret
+# Image pull secrets for the registries above. Supply your own at install, e.g.
+#   imagePullSecrets:
+#     - name: my-registry-secret
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
@@ -67,15 +69,16 @@ network:
 # serviceaccounts.yaml) range over this map, one StatefulSet/Service/ServiceAccount
 # per entry. Only the values that vary between components live here; everything else
 # is inlined once in statefulset.yaml. Port numbers still come from `network` above.
-#   image       - image name appended to image.repository (or image.stdRepository if stdRepo)
-#   stdRepo     - true selects image.stdRepository instead of image.repository
+#   image       - image name appended to the component's repository
+#   repository  - registry+repo prefix for this component; defaults to image.repository
+#                 (set only when this component's images live under a different root)
 #   dependsOn   - init-container wait target: either {component: <name>} (waits on that
 #                 component's http port) or a literal {service: <name>, port: <n>}
 #   containerPorts - port names (keyed into network.<component>) to expose as containerPorts
 #   probes      - raw liveness/readiness/startup probe blocks, rendered verbatim
 components:
   ema:
-    image: lindexextension-ema
+    image: ema
     dependsOn:
       component: ems
     containerPorts:
@@ -103,7 +106,7 @@ components:
         failureThreshold: 30
         initialDelaySeconds: 20
   emp:
-    image: lindexextension-emp
+    image: emp
     dependsOn:
       service: em-db
       port: 3306
@@ -126,7 +129,7 @@ components:
         failureThreshold: 10
         initialDelaySeconds: 20
   ems:
-    image: lindexextension-ems
+    image: ems
     dependsOn:
       component: emp
     containerPorts:
@@ -148,7 +151,6 @@ components:
         failureThreshold: 10
         initialDelaySeconds: 20
   tms:
-    stdRepo: true
     image: tms
     dependsOn:
       component: emp
@@ -177,7 +179,6 @@ components:
         failureThreshold: 30
         initialDelaySeconds: 20
   emr:
-    stdRepo: true
     image: emr
     dependsOn:
       component: emp
@@ -208,17 +209,32 @@ dns:
   tms: tms
   emr: emr
 
+# Enactor application settings referenced by templates/configmap-common.yaml.
+# Override these per deployment via your own values file.
+enactor:
+  # Process set this Estate Manager belongs to (ENACTOR_COMMON_PROCESSSET).
+  processSet: Enactor
+  # Process-connections definition id (ENACTOR_PROCESSCONNECTIONS_DEFINITIONID).
+  processConnectionsDefinitionId: PosEstateManager
+  # Base URLs of the card-authorisation (EFT) endpoints CARDAUTH1..4. These are
+  # independent endpoints (typically the same, but can differ for redundancy).
+  cardAuth1UrlBase: http://em-cardauth:39856
+  cardAuth2UrlBase: http://em-cardauth:39856
+  cardAuth3UrlBase: http://em-cardauth:39856
+  cardAuth4UrlBase: http://em-cardauth:39856
+
 ingress:
-  # Exposes the EMA web UI (WebMaintenance). EMP/EMS are reached over cluster
-  # DNS. TLS is terminated by the nginx ingress controller, so no tls block is
-  # needed here. EMR's WebReports UI can be exposed on the same host via the
-  # `emr` sub-block below; it is independently toggleable.
-  enabled: false
+  # className, host and annotations are shared by all component ingresses below.
+  # TLS is terminated by the nginx ingress controller, so no tls block is needed.
+  # EMP/EMS are reached over cluster DNS and have no ingress.
   className: nginx
-  host: store-qa.lindex.to
-  path: /WebMaintenance
+  host: em.example.com
   annotations: {}
-  # Exposes EMR's WebReports UI on the same host/className/annotations as above.
+  # Exposes the EMA web UI (WebMaintenance). Independently toggleable.
+  ema:
+    enabled: false
+    path: /WebMaintenance
+  # Exposes EMR's WebReports UI on the same host/className/annotations.
   emr:
     enabled: false
     path: /WebReports

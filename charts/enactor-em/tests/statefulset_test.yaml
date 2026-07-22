@@ -22,7 +22,7 @@ tests:
       - hasDocuments:
           count: 5
 
-  - it: ema uses the commerce/enactorpos registry root
+  - it: ema uses the image.repository registry root
     template: templates/statefulset.yaml
     documentSelector:
       path: metadata.name
@@ -30,17 +30,19 @@ tests:
     asserts:
       - matchRegex:
           path: spec.template.spec.containers[0].image
-          pattern: "^lindexacrdev\\.azurecr\\.io/commerce/enactorpos/lindexextension-ema:"
+          pattern: "^registry\\.example\\.com/enactor/ema:"
 
-  - it: emr uses the enactorstandard/lin registry root (stdRepo)
+  - it: a component can override its registry root via components.<c>.repository
     template: templates/statefulset.yaml
+    set:
+      components.emr.repository: other.example.com/custom
     documentSelector:
       path: metadata.name
       value: emr
     asserts:
       - matchRegex:
           path: spec.template.spec.containers[0].image
-          pattern: "^lindexacrdev\\.azurecr\\.io/enactorstandard/lin/emr:"
+          pattern: "^other\\.example\\.com/custom/emr:"
 
   - it: tms exposes both http and rmi container ports
     template: templates/statefulset.yaml

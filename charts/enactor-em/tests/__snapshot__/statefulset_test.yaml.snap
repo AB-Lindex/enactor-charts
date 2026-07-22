@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: ema
     spec:
       replicas: 1
@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/ema: ef53cca683a1f514bb3d69cee5c046dfd7d9a416cd91c4d47b62f34ff1797187
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/ema: e9e9c0daa280ff29cea89e1b2eed8bd45b5073164362c0ffd9fe4751caaa448c
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -40,14 +40,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -55,7 +47,7 @@ matches the rendered snapshot:
                     name: config-ema
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-ema:latest
+              image: registry.example.com/enactor/ema:latest
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 5
@@ -85,8 +77,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -144,7 +134,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: emp
     spec:
       replicas: 1
@@ -156,8 +146,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/emp: 46af314ac9f13d9e70398a1ea88b393602de77ab45a310fa9436f8b30520467a
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/emp: cab947652966c1cf3a09992aab99441ea9412dade9f0deeb6e657a6e0679f289
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -176,14 +166,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -191,7 +173,7 @@ matches the rendered snapshot:
                     name: config-emp
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-emp:latest
+              image: registry.example.com/enactor/emp:latest
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
@@ -218,8 +200,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -277,7 +257,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: emr
     spec:
       replicas: 1
@@ -289,8 +269,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/emr: f19fdabba1fc722cb037e65cb760505875723458f8a9a1e7dec76b825e0ff512
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/emr: 7e78038cf288b8b192b59ac3d06a630de1f3bbbd63a51e7784a4b47958207975
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -309,14 +289,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -324,7 +296,7 @@ matches the rendered snapshot:
                     name: config-emr
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/enactorstandard/lin/emr:latest
+              image: registry.example.com/enactor/emr:latest
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
@@ -351,8 +323,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -410,7 +380,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: ems
     spec:
       replicas: 1
@@ -422,8 +392,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/ems: 05534f5d9d1f1ccf481ee0391468d50812d8ef6504649cd044520061fd761602
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/ems: fe87a85a963aba38bf5215be290b61b567f460b97f2974100929f94141f86370
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -442,14 +412,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -457,7 +419,7 @@ matches the rendered snapshot:
                     name: config-ems
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-ems:latest
+              image: registry.example.com/enactor/ems:latest
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
@@ -484,8 +446,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -543,7 +503,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: tms
     spec:
       replicas: 1
@@ -555,8 +515,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/tms: c96d2ce35c64aef5208731727c3b91cf324e04ff057ec0093a3e95aad3c59b7b
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/tms: 2f599e91a55b15084c64de6440e236ca16ae89d7ff195043343d291c16bf91c8
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
@@ -575,14 +535,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -590,7 +542,7 @@ matches the rendered snapshot:
                     name: config-tms
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/enactorstandard/lin/tms:latest
+              image: registry.example.com/enactor/tms:latest
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 5
@@ -623,8 +575,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
