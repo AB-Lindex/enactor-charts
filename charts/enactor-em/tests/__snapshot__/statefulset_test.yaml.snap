@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: ema
     spec:
       replicas: 1
@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/ema: ef53cca683a1f514bb3d69cee5c046dfd7d9a416cd91c4d47b62f34ff1797187
+            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
+            checksum/ema: 5c6d28513670fd195c4bfdfa035100b7517e8a0cf2fdc5ec2d84a9b282346a59
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -55,7 +55,7 @@ matches the rendered snapshot:
                     name: config-ema
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-ema:latest
+              image: registry.example.com/enactor/ema:latest
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 5
@@ -85,8 +85,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -144,7 +142,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: emp
     spec:
       replicas: 1
@@ -156,8 +154,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/emp: 46af314ac9f13d9e70398a1ea88b393602de77ab45a310fa9436f8b30520467a
+            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
+            checksum/emp: a3246a218036719962c8af3a77443af5e495e0eb2eb5270ed753d36bda6db798
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -191,7 +189,7 @@ matches the rendered snapshot:
                     name: config-emp
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-emp:latest
+              image: registry.example.com/enactor/emp:latest
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
@@ -218,8 +216,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -277,7 +273,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: emr
     spec:
       replicas: 1
@@ -289,8 +285,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/emr: f19fdabba1fc722cb037e65cb760505875723458f8a9a1e7dec76b825e0ff512
+            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
+            checksum/emr: a885c1511b8171d0c3fb3364790c27fb395df88cdee3b4cd4025eee6191f4e8f
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -324,7 +320,7 @@ matches the rendered snapshot:
                     name: config-emr
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/enactorstandard/lin/emr:latest
+              image: registry.example.com/enactor/emr:latest
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
@@ -351,8 +347,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -410,7 +404,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: ems
     spec:
       replicas: 1
@@ -422,8 +416,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/ems: 05534f5d9d1f1ccf481ee0391468d50812d8ef6504649cd044520061fd761602
+            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
+            checksum/ems: 7ca394f621001e1592d949e757f3b9dc8d6f07c773cfaf69c006494b8555112f
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -457,7 +451,7 @@ matches the rendered snapshot:
                     name: config-ems
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/commerce/enactorpos/lindexextension-ems:latest
+              image: registry.example.com/enactor/ems:latest
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
@@ -484,8 +478,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh
@@ -543,7 +535,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.4.0
+        helm.sh/chart: enactor-em-0.5.0
       name: tms
     spec:
       replicas: 1
@@ -555,8 +547,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 68d574f7cf2ce6a7beb77e7b4b6748811229fb758d372f7094c5a8a02e259425
-            checksum/tms: c96d2ce35c64aef5208731727c3b91cf324e04ff057ec0093a3e95aad3c59b7b
+            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
+            checksum/tms: 52774d1689531144f919e9b720212b4eee2dffd00f6e88acc0751c306c4be0b5
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
@@ -590,7 +582,7 @@ matches the rendered snapshot:
                     name: config-tms
                 - secretRef:
                     name: secret-common
-              image: lindexacrdev.azurecr.io/enactorstandard/lin/tms:latest
+              image: registry.example.com/enactor/tms:latest
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 5
@@ -623,8 +615,6 @@ matches the rendered snapshot:
               volumeMounts:
                 - mountPath: /enactor/app/home
                   name: apphome
-          imagePullSecrets:
-            - name: pullsecret
           initContainers:
             - command:
                 - sh

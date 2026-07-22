@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "common.labels" . | nindent 4 }}
 data:
-  CATALINA_HOME: /enactor/shared/tomcatLindex
+  CATALINA_HOME: /enactor/shared/tomcat
   COMMON_HOME: /enactor/app/home
   EM: em-processing
   EMREPORT: em-application
@@ -27,7 +27,7 @@ data:
   ENACTOR_COMMON_FILEREPOSITORYHOME: /enactor/app/home/FileRepository
   ENACTOR_COMMON_LICENCEFILENAME: /enactor/shared/licence/licence.xml
   ENACTOR_COMMON_PARENTPROCESSSET: NextGen
-  ENACTOR_COMMON_PROCESSSET: Lindex
+  ENACTOR_COMMON_PROCESSSET: {{ .Values.enactor.processSet }}
   ENACTOR_COMMON_SOLRURL: http://solr:39846/solr
   ENACTOR_COMMON_USEPAYMENTSERVICE: "false"
   ENACTOR_CONTAINER_DEVICEID: estateManager.enactor
@@ -47,7 +47,6 @@ data:
   ENACTOR_FILEREPOSITORY_REPLICATIONSOURCE_SERVERURL: {{ include "emp.http" . }}
   ENACTOR_FILEREPOSITORY_SERVER_URL: {{ include "emp.http" . }}/WebCore/Downloads
   ENACTOR_FILEREPOSITORY_URL_BASE: {{ include "emp.http" . }}/WebCore/Downloads
-  ENACTOR_HELP_URL_BASE: https://{{ include "primary.ingress" . }}/WebMaintenance/Help
   ENACTOR_HOME: /enactor/app/home
 #  ENACTOR_JMX_APPLICATIONID: AppServer
 #  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: em-processing
@@ -69,7 +68,7 @@ data:
   ENACTOR_PAYMENT_GATEWAY_URL_BASE: https://em-cardauth:52266
   ENACTOR_PPM_URL_BASE: http://ppm-server:39868/
   ENACTOR_PROCESSCONNECTIONS_ACCOUNTCREDENTIALSPROVIDERCLASSNAME: com.enactor.mfc.accountCredentials.AccountCredentialsProvider
-  ENACTOR_PROCESSCONNECTIONS_DEFINITIONID: LindexPosEstateManager
+  ENACTOR_PROCESSCONNECTIONS_DEFINITIONID: {{ .Values.enactor.processConnectionsDefinitionId }}
   ENACTOR_QUERYTRANSLATOR_DATABASEIDENTIFIER: MYSQL
   ENACTOR_QUEUECONNECTOR_MULTICASTHOSTNAME: "224.0.0.1"
   ENACTOR_QUEUECONNECTOR_MULTICASTPORT: "50000"
@@ -88,14 +87,14 @@ data:
   ENACTOR_SERVER_BOPROC_URL_BASE: http://store-server-1:39848
   ENACTOR_SERVER_BOPROCRMI_URL_BASE: http://localhost:8080
   ENACTOR_SERVER_BOREPORTS_URL_BASE: http://localhost:8080
-  ENACTOR_SERVER_BOWS_URL_BASE: http://lxconstore24.lindex.to:39833
+  ENACTOR_SERVER_BOWS_URL_BASE: http://{{ include "primary.ingress" . }}:{{ include "ems.http.port" . }}
   ENACTOR_SERVER_BP_HOST: {{ include "emp.name" . }}
   ENACTOR_SERVER_BP_HTTPPORT: {{ include "emp.http.port" . | quote }}
   ENACTOR_SERVER_BP_URL_BASE: {{ include "emp.http" . }}
-  ENACTOR_SERVER_CARDAUTH1_URL_BASE: http://em-cardauth:39856
-  ENACTOR_SERVER_CARDAUTH2_URL_BASE: http://em-cardauth:39856
-  ENACTOR_SERVER_CARDAUTH3_URL_BASE: http://em-cardauth:39856
-  ENACTOR_SERVER_CARDAUTH4_URL_BASE: http://em-cardauth:39856
+  ENACTOR_SERVER_CARDAUTH1_URL_BASE: {{ .Values.enactor.cardAuth1UrlBase }}
+  ENACTOR_SERVER_CARDAUTH2_URL_BASE: {{ .Values.enactor.cardAuth2UrlBase }}
+  ENACTOR_SERVER_CARDAUTH3_URL_BASE: {{ .Values.enactor.cardAuth3UrlBase }}
+  ENACTOR_SERVER_CARDAUTH4_URL_BASE: {{ .Values.enactor.cardAuth4UrlBase }}
   ENACTOR_SERVER_CM_HOST: cm-processing
   ENACTOR_SERVER_CM_HTTPPORT: "39840"
   ENACTOR_SERVER_CM_WS_HOST: cm-services
