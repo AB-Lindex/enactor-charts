@@ -5,7 +5,7 @@ metadata:
   name: {{ include "ema.name" . }}
   labels:
     {{- include "ema.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- with .Values.ingress.ema.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}

@@ -233,29 +233,32 @@ enactor:
   cardAuth4UrlBase: http://em-cardauth:39856
 
 ingress:
-  # className, host and annotations are shared by all component ingresses below.
-  # TLS is terminated by the nginx ingress controller, so no tls block is needed.
+  # className and host are shared by all component ingresses below; annotations
+  # are set per component. TLS is terminated by the nginx ingress controller, so
+  # no tls block is needed.
   className: nginx
   host: em.example.com
-  annotations: {}
   # Exposes the EMA web UI (WebMaintenance). Independently toggleable.
   ema:
-    enabled: false
+    # Exposes the EMA WebMaintenance UI
+    enabled: true
     path: /WebMaintenance
-  # Exposes EMR's WebReports UI on the same host/className/annotations.
+    annotations: {}
   emr:
-    enabled: false
+    # Exposes the EMR WebReports UI
+    enabled: true
     path: /WebReports
-  # Exposes the EMS WebRestApi (e.g. .../WebRestApi/rest/configuration/import/test.xml)
-  # on the same host/className/annotations.
+    annotations: {}
   ems:
-    enabled: false
+    # Exposes the EMS WebRestApi
+    enabled: true
     path: /WebRestApi
-  # Exposes EMP's WebCore (e.g. file broadcast downloads) on the same
-  # host/className/annotations.
+    annotations: {}
   emp:
-    enabled: false
+    # Exposes EMP's WebCore
+    enabled: true
     path: /WebCore
+    annotations: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

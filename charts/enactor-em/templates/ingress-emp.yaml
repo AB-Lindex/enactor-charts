@@ -5,7 +5,7 @@ metadata:
   name: {{ include "emp.name" . }}
   labels:
     {{- include "emp.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- with .Values.ingress.emp.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
