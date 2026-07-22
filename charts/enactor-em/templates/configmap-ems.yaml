@@ -3,15 +3,17 @@ kind: ConfigMap
 metadata:
   name: config-{{ include "ems.name" . }}
   labels:
-    {{- include "ema.labels" . | nindent 4 }}
+    {{- include "ems.labels" . | nindent 4 }}
 data:
-#  ENACTOR_JMX_APPLICATIONID: "AppServer"
-  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: {{ include "emp.name" . }}
   ENACTOR_CROSS_DOMAIN_ORIGIN: "*"
-  ENACTOR_TOMCAT_HTTP_DISABLED: "false"
-  ENACTOR_CLEAR_TOMCAT_TEMP: "true"
-  ENACTOR_RESTAPI_CUSTOMERUSER: "CUST_USER"
-  ENACTOR_REST_AUENACTOR_RESTAPI_DEVICEID: "RestApi@S001.enactor"
+  ENACTOR_JMX_APPLICATIONID: ServicesServer
+  ENACTOR_RMI_SERVERHOST: {{ include "ems.name" . }}
+
+  ENACTOR_REST_AUTHENTICATERESTAPI: "true"
+  ENACTOR_RESTAPI_DEVICEID: RestApi@S001.enactor
+  ENACTOR_RESTAPI_CUSTOMERUSER: CUST_USER
   ENACTOR_RESTAPI_PAYMENTS_DEMO_MODE: "true"
-  JMPX: "128m"
-  JXMX: "768m"
+
+  JMPS: 128m
+  JXMS: 512m
+  JXMX: 768m

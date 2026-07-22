@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
-            checksum/ema: 5c6d28513670fd195c4bfdfa035100b7517e8a0cf2fdc5ec2d84a9b282346a59
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/ema: e9e9c0daa280ff29cea89e1b2eed8bd45b5073164362c0ffd9fe4751caaa448c
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -40,14 +40,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -154,8 +146,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
-            checksum/emp: a3246a218036719962c8af3a77443af5e495e0eb2eb5270ed753d36bda6db798
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/emp: cab947652966c1cf3a09992aab99441ea9412dade9f0deeb6e657a6e0679f289
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -174,14 +166,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -285,8 +269,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
-            checksum/emr: a885c1511b8171d0c3fb3364790c27fb395df88cdee3b4cd4025eee6191f4e8f
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/emr: 7e78038cf288b8b192b59ac3d06a630de1f3bbbd63a51e7784a4b47958207975
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -305,14 +289,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -416,8 +392,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
-            checksum/ems: 7ca394f621001e1592d949e757f3b9dc8d6f07c773cfaf69c006494b8555112f
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/ems: fe87a85a963aba38bf5215be290b61b567f460b97f2974100929f94141f86370
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -436,14 +412,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -547,8 +515,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 349869d4f220b0244bf81fcb8f19950833e1f5ea06913e81f04b8777f662aa6c
-            checksum/tms: 52774d1689531144f919e9b720212b4eee2dffd00f6e88acc0751c306c4be0b5
+            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
+            checksum/tms: 2f599e91a55b15084c64de6440e236ca16ae89d7ff195043343d291c16bf91c8
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
@@ -567,14 +535,6 @@ matches the rendered snapshot:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-                - name: ENACTOR_RMI_SERVERHOST
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.podIP
-                - name: ENACTOR_JMX_APPLICATIONID
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
               envFrom:
                 - configMapRef:
                     name: config-common

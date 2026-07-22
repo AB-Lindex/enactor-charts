@@ -5,8 +5,7 @@ metadata:
   labels:
     {{- include "tms.labels" . | nindent 4 }}
 data:
-#  ENACTOR_JMX_APPLICATIONID: "TmsServer"
-  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: {{ include "emp.name" . }}
+  ENACTOR_JMX_APPLICATIONID: TmsServer
+  ENACTOR_RMI_SERVERHOST: {{ include "tms.name" . }}
+
   ENACTOR_MODULES_TMS: "true"
-  ENACTOR_TOMCAT_HTTP_DISABLED: "false"
-  JXMX: "768m"

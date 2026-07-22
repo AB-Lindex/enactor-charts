@@ -66,16 +66,6 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
 
-            - name: ENACTOR_RMI_SERVERHOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-
-            - name: ENACTOR_JMX_APPLICATIONID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-
           envFrom:
             - configMapRef:
                 name: config-common
