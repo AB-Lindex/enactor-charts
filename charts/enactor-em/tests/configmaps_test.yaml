@@ -1,0 +1,23 @@
+suite: enactor-em configmaps
+templates:
+  - templates/configmap-common.yaml
+  - templates/configmap-emp.yaml
+release:
+  name: em
+  namespace: em
+set:
+  dns.domain: test.example
+tests:
+  - it: common configmap binds JMX to all interfaces so the port is reachable from outside the pod
+    template: templates/configmap-common.yaml
+    asserts:
+      - equal:
+          path: data.ENACTOR_JMX_SERVERHOSTNAME
+          value: 0.0.0.0
+
+  - it: emp configmap sets the JMX management node hostname
+    template: templates/configmap-emp.yaml
+    asserts:
+      - equal:
+          path: data.ENACTOR_JMX_MANAGEMENTNODEHOSTNAME
+          value: localhost

@@ -6,6 +6,7 @@ metadata:
     {{- include "emp.labels" . | nindent 4 }}
 data:
   ENACTOR_JMX_APPLICATIONID: ProcServer
+  ENACTOR_JMX_MANAGEMENTNODEHOSTNAME: localhost
   ENACTOR_BROADCAST_DEFAULTDOWNLOADSERVERHOSTNAME: http://{{ include "primary.ingress" . }}/
   ENACTOR_BROADCAST_DEFAULTDOWNLOADURL: http://{{ include "primary.ingress" . }}:{{ include "emp.http.port" . }}/WebCore/FileDownloadServlet
   ENACTOR_MAXTHREADS: "250"
