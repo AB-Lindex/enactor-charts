@@ -74,7 +74,7 @@ tests:
             name: PORT
             value: "3306"
 
-  - it: ema waits on ems before starting
+  - it: ema waits on emp before starting
     template: templates/statefulset.yaml
     documentSelector:
       path: metadata.name
@@ -84,12 +84,12 @@ tests:
           path: spec.template.spec.initContainers[0].env
           content:
             name: HOST
-            value: ems
+            value: emp
       - contains:
           path: spec.template.spec.initContainers[0].env
           content:
             name: PORT
-            value: "39833"
+            value: "39832"
 
   - it: selector stays on the component name (immutable field must not drift)
     template: templates/statefulset.yaml

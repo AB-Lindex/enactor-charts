@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.0
+        helm.sh/chart: enactor-em-0.5.1
       name: ema
     spec:
       replicas: 1
@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
-            checksum/ema: e9e9c0daa280ff29cea89e1b2eed8bd45b5073164362c0ffd9fe4751caaa448c
+            checksum/common: 8ea7d3ab5274ba401a1441ee4dfb7ea5dfa0a1d73ef30d9f7ba1b0b0beabf376
+            checksum/ema: 5b3dc7e0e7449f78a284ec503787364ccaad1cdad2acf7a9099997b142fb2438
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -91,9 +91,9 @@ matches the rendered snapshot:
                   echo -e "  >> Service '$HOST' has started";
               env:
                 - name: HOST
-                  value: ems
+                  value: emp
                 - name: PORT
-                  value: "39833"
+                  value: "39832"
                 - name: INTERVAL
                   value: "2"
               image: busybox:1.31
@@ -134,7 +134,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.0
+        helm.sh/chart: enactor-em-0.5.1
       name: emp
     spec:
       replicas: 1
@@ -146,8 +146,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
-            checksum/emp: cab947652966c1cf3a09992aab99441ea9412dade9f0deeb6e657a6e0679f289
+            checksum/common: 8ea7d3ab5274ba401a1441ee4dfb7ea5dfa0a1d73ef30d9f7ba1b0b0beabf376
+            checksum/emp: 4748809d6fd8e4d3895bbcd18d6d74a225cbe8afc9ce00ff2d143ed60ddd2166
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -183,6 +183,21 @@ matches the rendered snapshot:
               ports:
                 - containerPort: 39832
                   name: http
+                  protocol: TCP
+                - containerPort: 39847
+                  name: jmx
+                  protocol: TCP
+                - containerPort: 39848
+                  name: jmx1
+                  protocol: TCP
+                - containerPort: 39849
+                  name: jmx2
+                  protocol: TCP
+                - containerPort: 39850
+                  name: jmx3
+                  protocol: TCP
+                - containerPort: 39851
+                  name: jmx4
                   protocol: TCP
               readinessProbe:
                 httpGet:
@@ -257,7 +272,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.0
+        helm.sh/chart: enactor-em-0.5.1
       name: emr
     spec:
       replicas: 1
@@ -269,8 +284,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
-            checksum/emr: 7e78038cf288b8b192b59ac3d06a630de1f3bbbd63a51e7784a4b47958207975
+            checksum/common: 8ea7d3ab5274ba401a1441ee4dfb7ea5dfa0a1d73ef30d9f7ba1b0b0beabf376
+            checksum/emr: 7834be27e2c610ad67a895ff4366000ede465f065e8c9bb633a37ae6d7a6877e
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -380,7 +395,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.0
+        helm.sh/chart: enactor-em-0.5.1
       name: ems
     spec:
       replicas: 1
@@ -392,8 +407,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
-            checksum/ems: fe87a85a963aba38bf5215be290b61b567f460b97f2974100929f94141f86370
+            checksum/common: 8ea7d3ab5274ba401a1441ee4dfb7ea5dfa0a1d73ef30d9f7ba1b0b0beabf376
+            checksum/ems: 1fe3e98ea119130572aff324b661b1943b304c58f7a270600db40b69837afd80
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -503,7 +518,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.0
+        helm.sh/chart: enactor-em-0.5.1
       name: tms
     spec:
       replicas: 1
@@ -515,8 +530,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 90314382e49cb8161bf8d43d49ee4ae6af8d0b564998684c8396b49c34968a93
-            checksum/tms: 2f599e91a55b15084c64de6440e236ca16ae89d7ff195043343d291c16bf91c8
+            checksum/common: 8ea7d3ab5274ba401a1441ee4dfb7ea5dfa0a1d73ef30d9f7ba1b0b0beabf376
+            checksum/tms: 58930a6b7d52b4faeeeea665b658e3401abae580f596001e896c16b7f4b28eec
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
