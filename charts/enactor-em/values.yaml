@@ -80,7 +80,7 @@ components:
   ema:
     image: ema
     dependsOn:
-      component: ems
+      component: emp
     containerPorts:
       - http
     probes:
@@ -110,8 +110,17 @@ components:
     dependsOn:
       service: em-db
       port: 3306
+    # emp is the JMX management node (ENACTOR_JMX_MANAGEMENTNODEHOSTNAME=emp);
+    # the emp Service publishes jmx/jmx1..4 (39847-39851) with named targetPorts,
+    # so the pod must declare matching containerPorts or those Service ports get
+    # no endpoints and emp:39847 is refused. The chart default is [http] only.
     containerPorts:
       - http
+      - jmx
+      - jmx1
+      - jmx2
+      - jmx3
+      - jmx4
     probes:
       livenessProbe:
         httpGet:
