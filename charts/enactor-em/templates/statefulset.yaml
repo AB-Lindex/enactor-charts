@@ -61,6 +61,11 @@ spec:
           env:
             {{ include "db.env" $ | nindent 12 }}
 
+            - name: ENACTOR_RMI_SERVERHOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+
           envFrom:
             - configMapRef:
                 name: config-common

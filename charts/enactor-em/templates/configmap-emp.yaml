@@ -8,7 +8,6 @@ data:
   ENACTOR_JMX_APPLICATIONID: ProcServer
   ENACTOR_BROADCAST_DEFAULTDOWNLOADSERVERHOSTNAME: http://{{ include "primary.ingress" . }}/
   ENACTOR_BROADCAST_DEFAULTDOWNLOADURL: http://{{ include "primary.ingress" . }}:{{ include "emp.http.port" . }}/WebCore/FileDownloadServlet
-  ENACTOR_RMI_SERVERHOST: {{ include "primary.ingress" . }}
   ENACTOR_MAXTHREADS: "250"
 
   JXMS: 1024m

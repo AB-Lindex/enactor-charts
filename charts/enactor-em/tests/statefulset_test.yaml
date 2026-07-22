@@ -91,6 +91,20 @@ tests:
             name: PORT
             value: "39832"
 
+  - it: sets ENACTOR_RMI_SERVERHOST from the pod IP
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ENACTOR_RMI_SERVERHOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+
   - it: selector stays on the component name (immutable field must not drift)
     template: templates/statefulset.yaml
     documentSelector:

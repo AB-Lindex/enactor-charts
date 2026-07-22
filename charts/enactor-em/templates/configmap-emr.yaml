@@ -6,7 +6,6 @@ metadata:
     {{- include "emr.labels" . | nindent 4 }}
 data:
   ENACTOR_JMX_APPLICATIONID: ReportServer
-  ENACTOR_RMI_SERVERHOST: {{ include "emr.name" . }}
   ENACTOR_SERVICE_DEFAULTSCHEDULEDJOBRUNTIMECONTEXT: Enactor Web Reports
 
   ENACTOR_MAXTOTAL: "300"

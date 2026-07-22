@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.2
+        helm.sh/chart: enactor-em-0.5.3
       name: ema
     spec:
       replicas: 1
@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: bea14d72261fbc78489e73fdc0c9e994509ca72723a214cf5957ccaf99801ecc
-            checksum/ema: 844e84a1dc92067abb80e385e963bd56d058ab9b6a4c7f9abdf2d7a127060750
+            checksum/common: 1790bf7908c4beecd59be497f6aeb5cd60485578389371a09f458ed3712afde8
+            checksum/ema: 6fed692c29c8943958dceecd9bc930d02a05eead9970d369258fd1992c16a27a
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -36,6 +36,10 @@ matches the rendered snapshot:
                     secretKeyRef:
                       key: mariadb-password
                       name: em-secrets
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -130,7 +134,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.2
+        helm.sh/chart: enactor-em-0.5.3
       name: emp
     spec:
       replicas: 1
@@ -142,8 +146,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: bea14d72261fbc78489e73fdc0c9e994509ca72723a214cf5957ccaf99801ecc
-            checksum/emp: 0cd382fb4ce127a41e59bac54c5844b97ced47fbfe5290edb02649480a1d9eba
+            checksum/common: 1790bf7908c4beecd59be497f6aeb5cd60485578389371a09f458ed3712afde8
+            checksum/emp: c995b475f9e4ee70fe3b0ce3bbf2af6597818e05ed35da05cde2faecd6a6e0c1
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -158,6 +162,10 @@ matches the rendered snapshot:
                     secretKeyRef:
                       key: mariadb-password
                       name: em-secrets
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -264,7 +272,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.2
+        helm.sh/chart: enactor-em-0.5.3
       name: emr
     spec:
       replicas: 1
@@ -276,8 +284,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: bea14d72261fbc78489e73fdc0c9e994509ca72723a214cf5957ccaf99801ecc
-            checksum/emr: 5d4bda84780ed7e52083e1a212d1ba1cfbe5fdcf028e15d3bf3f9dcbe178af62
+            checksum/common: 1790bf7908c4beecd59be497f6aeb5cd60485578389371a09f458ed3712afde8
+            checksum/emr: 23a32483413e92ccdaef9b88a7b14d4af018d1f8617c8ca1318bfccac640cf86
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -292,6 +300,10 @@ matches the rendered snapshot:
                     secretKeyRef:
                       key: mariadb-password
                       name: em-secrets
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -383,7 +395,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.2
+        helm.sh/chart: enactor-em-0.5.3
       name: ems
     spec:
       replicas: 1
@@ -395,8 +407,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: bea14d72261fbc78489e73fdc0c9e994509ca72723a214cf5957ccaf99801ecc
-            checksum/ems: 6fdd670dae46c25c3ed6dc1e146912f0ba31d92466eb720e3963eb2d92983cb2
+            checksum/common: 1790bf7908c4beecd59be497f6aeb5cd60485578389371a09f458ed3712afde8
+            checksum/ems: 17444d5afd951d0fb17f41ea54572c8e35255cdf3fbdb2a8ed6a4be0cc0704ad
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -411,6 +423,10 @@ matches the rendered snapshot:
                     secretKeyRef:
                       key: mariadb-password
                       name: em-secrets
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
               envFrom:
                 - configMapRef:
                     name: config-common
@@ -502,7 +518,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.2
+        helm.sh/chart: enactor-em-0.5.3
       name: tms
     spec:
       replicas: 1
@@ -514,8 +530,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: bea14d72261fbc78489e73fdc0c9e994509ca72723a214cf5957ccaf99801ecc
-            checksum/tms: f5347e4da3c3917773b70af1dbbae11d55bbdc43b1e6bf5cfe85a7a351b4be76
+            checksum/common: 1790bf7908c4beecd59be497f6aeb5cd60485578389371a09f458ed3712afde8
+            checksum/tms: c3f5aab946a340d7fda3b248000383b6a1211cbed8e7bac5a4d97d59128ec906
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
@@ -530,6 +546,10 @@ matches the rendered snapshot:
                     secretKeyRef:
                       key: mariadb-password
                       name: em-secrets
+                - name: ENACTOR_RMI_SERVERHOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.podIP
               envFrom:
                 - configMapRef:
                     name: config-common

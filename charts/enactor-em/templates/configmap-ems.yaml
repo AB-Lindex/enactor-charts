@@ -7,7 +7,6 @@ metadata:
 data:
   ENACTOR_CROSS_DOMAIN_ORIGIN: "*"
   ENACTOR_JMX_APPLICATIONID: ServicesServer
-  ENACTOR_RMI_SERVERHOST: {{ include "ems.name" . }}
 
   ENACTOR_REST_AUTHENTICATERESTAPI: "true"
   ENACTOR_RESTAPI_DEVICEID: RestApi@S001.enactor

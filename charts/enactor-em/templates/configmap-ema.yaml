@@ -6,6 +6,5 @@ metadata:
     {{- include "ema.labels" . | nindent 4 }}
 data:
   ENACTOR_JMX_APPLICATIONID: AppServer
-  ENACTOR_RMI_SERVERHOST: {{ include "ema.name" . }}
   ENACTOR_HELP_URL_BASE: https://{{ include "primary.ingress" . }}/WebMaintenance/Help
   SIGN_ON_SINGLE_SIGN_ON_MANAGER_CLASSNAME: com.enactor.commonUI.signOn.OpenIdSignOnManager
