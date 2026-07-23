@@ -250,9 +250,11 @@ ingress:
     path: /WebReports
     annotations: {}
   ems:
-    # Exposes the EMS WebRestApi
+    # Exposes the EMS WebRestApi and Axis2 web services
     enabled: true
-    path: /WebRestApi
+    paths:
+      - /WebRestApi
+      - /axis2
     annotations: {}
   emp:
     # Exposes EMP's WebCore
