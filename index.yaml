@@ -3,6 +3,27 @@ entries:
   enactor-em:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2026-07-23T08:00:53.041334426Z"
+    dependencies:
+    - condition: mariadb.deploy
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.4.0
+    description: Enactor EM-servers
+    digest: 276db3ece4f545f1f6dd8b60b78f8355a444ddcace357fdde2005da762835a5c
+    home: https://github.com/enactor-customer-oss/enactor-charts
+    maintainers:
+    - email: hans.brinck@lindex.com
+      name: Hans Brinck
+    - email: olof.spetz@lindex.com
+      name: Olof Spetz
+    name: enactor-em
+    type: application
+    urls:
+    - https://github.com/AB-Lindex/enactor-charts/releases/download/enactor-em-0.5.9/enactor-em-0.5.9.tgz
+    version: 0.5.9
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2026-07-22T14:58:19.322910628Z"
     dependencies:
     - condition: mariadb.deploy
@@ -937,4 +958,4 @@ entries:
     urls:
     - https://github.com/AB-Lindex/enactor-charts/releases/download/enactor-pdp-0.1.0/enactor-pdp-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-22T14:58:19.323009753Z"
+generated: "2026-07-23T08:00:53.041455313Z"
