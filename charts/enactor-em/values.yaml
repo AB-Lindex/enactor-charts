@@ -107,6 +107,10 @@ components:
         initialDelaySeconds: 20
   emp:
     image: emp
+    # Optional: advertise a routable RMI host (ENACTOR_RMI_SERVERHOST) instead of
+    # the pod IP — set when emp's RMI is reached from outside the cluster via a
+    # proxy VIP. Defaults to status.podIP when unset.
+    # rmiServerHost: "10.0.0.1"
     dependsOn:
       service: em-db
       port: 3306
@@ -224,7 +228,7 @@ enactor:
   # Process set this Estate Manager belongs to (ENACTOR_COMMON_PROCESSSET).
   processSet: Enactor
   # Process-connections definition id (ENACTOR_PROCESSCONNECTIONS_DEFINITIONID).
-  processConnectionsDefinitionId: PosEstateManager
+  processConnectionsDefinitionId: StandardPosEstateManager
   # Base URLs of the card-authorisation (EFT) endpoints CARDAUTH1..4. These are
   # independent endpoints (typically the same, but can differ for redundancy).
   cardAuth1UrlBase: http://em-cardauth:39856
