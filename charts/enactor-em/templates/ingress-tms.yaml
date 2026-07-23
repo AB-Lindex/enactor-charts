@@ -15,11 +15,13 @@ spec:
     - host: {{ .Values.ingress.host | quote }}
       http:
         paths:
-          - path: {{ .Values.ingress.tms.path }}
+          {{- range .Values.ingress.tms.paths }}
+          - path: {{ . }}
             pathType: Prefix
             backend:
               service:
-                name: {{ include "tms.name" . }}
+                name: {{ include "tms.name" $ }}
                 port:
                   name: http
+          {{- end }}
 {{- end }}

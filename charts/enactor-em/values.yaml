@@ -242,12 +242,14 @@ ingress:
   ema:
     # Exposes the EMA WebMaintenance UI
     enabled: true
-    path: /WebMaintenance
+    paths:
+      - /WebMaintenance
     annotations: {}
   emr:
     # Exposes the EMR WebReports UI
     enabled: true
-    path: /WebReports
+    paths:
+      - /WebReports
     annotations: {}
   ems:
     # Exposes the EMS WebRestApi and Axis2 web services
@@ -259,12 +261,14 @@ ingress:
   emp:
     # Exposes EMP's WebCore
     enabled: true
-    path: /WebCore
+    paths:
+      - /WebCore
     annotations: {}
   tms:
     # Exposes the TMS WebTerminalManager UI
     enabled: true
-    path: /WebTerminalManager
+    paths:
+      - /WebTerminalManager
     annotations: {}
 
 resources: {}
