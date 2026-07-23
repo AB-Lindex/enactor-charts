@@ -259,6 +259,11 @@ ingress:
     enabled: true
     path: /WebCore
     annotations: {}
+  tms:
+    # Exposes the TMS WebTerminalManager UI
+    enabled: true
+    path: /WebTerminalManager
+    annotations: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

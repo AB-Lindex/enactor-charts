@@ -1,0 +1,25 @@
+{{- if .Values.ingress.tms.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "tms.name" . }}
+  labels:
+    {{- include "tms.labels" . | nindent 4 }}
+  {{- with .Values.ingress.tms.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ .Values.ingress.host | quote }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.tms.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "tms.name" . }}
+                port:
+                  name: http
+{{- end }}
