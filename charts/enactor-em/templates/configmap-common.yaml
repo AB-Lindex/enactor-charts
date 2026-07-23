@@ -14,7 +14,7 @@ data:
   ENACTOR_AXIS2_URL: {{ include "ems.http" . }}/axis2
   ENACTOR_AXIS2_USER: admin
   ENACTOR_BPEL_RUNTIMEURL: {{ include "emp.http" . }}/WebCore
-  ENACTOR_BROADCAST_DEFAULTDOWNLOADURL: http://{{ include "primary.ingress" . }}:{{ include "emp.http.port" . }}/WebCore/FileDownloadServlet
+  ENACTOR_BROADCAST_DEFAULTDOWNLOADURL: https://{{ include "primary.ingress" . }}/WebCore/FileDownloadServlet
   ENACTOR_COMMON_APPLICATIONDATAHOME: /enactor/app/home/data
   ENACTOR_COMMON_APPLICATIONHOME: /enactor/app/home
   ENACTOR_COMMON_DATABASESCHEMA: enactorem
@@ -82,7 +82,7 @@ data:
   ENACTOR_SERVER_BOPROC_URL_BASE: http://store-server-1:39848
   ENACTOR_SERVER_BOPROCRMI_URL_BASE: http://localhost:8080
   ENACTOR_SERVER_BOREPORTS_URL_BASE: http://localhost:8080
-  ENACTOR_SERVER_BOWS_URL_BASE: http://{{ include "primary.ingress" . }}:{{ include "ems.http.port" . }}
+  ENACTOR_SERVER_BOWS_URL_BASE: https://{{ include "primary.ingress" . }}
   ENACTOR_SERVER_BP_HOST: {{ include "emp.name" . }}
   ENACTOR_SERVER_BP_HTTPPORT: {{ include "emp.http.port" . | quote }}
   ENACTOR_SERVER_BP_URL_BASE: {{ include "emp.http" . }}

@@ -15,6 +15,20 @@ tests:
           path: data.ENACTOR_JMX_SERVERHOSTNAME
           value: 0.0.0.0
 
+  - it: common configmap routes the broadcast download URL through the ingress over https
+    template: templates/configmap-common.yaml
+    asserts:
+      - equal:
+          path: data.ENACTOR_BROADCAST_DEFAULTDOWNLOADURL
+          value: https://em.example.com/WebCore/FileDownloadServlet
+
+  - it: common configmap routes the BOWS URL base through the ingress over https
+    template: templates/configmap-common.yaml
+    asserts:
+      - equal:
+          path: data.ENACTOR_SERVER_BOWS_URL_BASE
+          value: https://em.example.com
+
   - it: emp configmap sets the JMX management node hostname
     template: templates/configmap-emp.yaml
     asserts:

@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.10
+        helm.sh/chart: enactor-em-0.5.11
       name: ema
     spec:
       ports:
@@ -29,7 +29,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.10
+        helm.sh/chart: enactor-em-0.5.11
       name: emp
     spec:
       ports:
@@ -70,7 +70,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.10
+        helm.sh/chart: enactor-em-0.5.11
       name: emr
     spec:
       ports:
@@ -91,7 +91,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.10
+        helm.sh/chart: enactor-em-0.5.11
       name: ems
     spec:
       ports:
@@ -112,7 +112,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.10
+        helm.sh/chart: enactor-em-0.5.11
       name: tms
     spec:
       ports:
