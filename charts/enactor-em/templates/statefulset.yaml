@@ -61,10 +61,18 @@ spec:
           env:
             {{ include "db.env" $ | nindent 12 }}
 
+            # RMI hands clients an absolute host:port for the callback. Default is
+            # the pod IP (reachable in-cluster). Set components.<c>.rmiServerHost to
+            # advertise a routable address instead (e.g. a tsproxy VIP) when the
+            # component's RMI is reached from outside the cluster.
             - name: ENACTOR_RMI_SERVERHOST
+              {{- if $comp.rmiServerHost }}
+              value: {{ $comp.rmiServerHost | quote }}
+              {{- else }}
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+              {{- end }}
 
           envFrom:
             - configMapRef:

@@ -91,13 +91,34 @@ tests:
             name: PORT
             value: "39832"
 
-  - it: sets ENACTOR_RMI_SERVERHOST from the pod IP
+  - it: defaults ENACTOR_RMI_SERVERHOST to the pod IP when rmiServerHost is unset
     template: templates/statefulset.yaml
     documentSelector:
       path: metadata.name
       value: emp
     asserts:
       - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ENACTOR_RMI_SERVERHOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+
+  - it: components.<c>.rmiServerHost overrides ENACTOR_RMI_SERVERHOST with a literal value
+    template: templates/statefulset.yaml
+    set:
+      components.emp.rmiServerHost: 10.16.2.20
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ENACTOR_RMI_SERVERHOST
+            value: "10.16.2.20"
+      - notContains:
           path: spec.template.spec.containers[0].env
           content:
             name: ENACTOR_RMI_SERVERHOST
