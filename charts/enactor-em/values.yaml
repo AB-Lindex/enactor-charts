@@ -61,7 +61,6 @@ network:
     http: 39833
   tms:
     http: 39888
-    rmi: 39851
   emr:
     http: 39831
 
@@ -187,7 +186,6 @@ components:
       component: emp
     containerPorts:
       - http
-      - rmi
     probes:
       # TMS has no healthcheck in the compose reference, so check the port
       # is listening rather than guess a working URL (as ema does).

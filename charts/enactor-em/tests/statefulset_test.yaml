@@ -44,18 +44,18 @@ tests:
           path: spec.template.spec.containers[0].image
           pattern: "^other\\.example\\.com/custom/emr:"
 
-  - it: tms exposes both http and rmi container ports
+  - it: tms exposes only the http container port
     template: templates/statefulset.yaml
     documentSelector:
       path: metadata.name
       value: tms
     asserts:
-      - contains:
+      - equal:
           path: spec.template.spec.containers[0].ports
-          content:
-            name: rmi
-            containerPort: 39851
-            protocol: TCP
+          value:
+            - name: http
+              containerPort: 39888
+              protocol: TCP
 
   - it: emp waits on the database before starting
     template: templates/statefulset.yaml
