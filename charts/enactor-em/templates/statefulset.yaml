@@ -72,6 +72,15 @@ spec:
                   fieldPath: status.podIP
               {{- end }}
 
+            # Extra env vars: global first (applied to every component), then the
+            # component's own — either can inject literals or valueFrom refs.
+            {{- with $.Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with $comp.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+
           envFrom:
             - configMapRef:
                 name: config-common

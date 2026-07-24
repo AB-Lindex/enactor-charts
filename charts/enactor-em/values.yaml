@@ -82,6 +82,12 @@ network:
 #   resources   - container resources block; defaults to the global `resources`
 #   storage     - {size: <n>} for the apphome PVC; defaults to the global `storage.size`
 #                 (PVC size is immutable on existing StatefulSets)
+#   extraEnv    - list of extra container env vars (literals or valueFrom); appended
+#                 after the global `extraEnv`. Only set for one-off, component-specific
+#                 vars — shared config belongs in the configmaps.
+#   podDisruptionBudget - {enabled, minAvailable|maxUnavailable}; off by default and
+#                 only meaningful at replicas > 1. minAvailable defaults to 1; set
+#                 maxUnavailable instead to cap simultaneous voluntary evictions.
 components:
   ema:
     image: ema
@@ -90,9 +96,15 @@ components:
     containerPorts:
       - http
     probes:
-      # WebMaintenance responds with an auth/session redirect chain that an
-      # httpGet probe would follow past its 10-redirect limit and fail, so
-      # (as enactor-pdp does) we check the port is listening instead.
+      # tcpSocket, not httpGet: WebMaintenance responds with an auth/session
+      # redirect chain that an httpGet probe follows past its 10-redirect limit
+      # and fails, so we check the port is listening instead (as enactor-pdp does).
+      # The Enactor vendor chart (em-application) points httpGet at /WebMaintenance
+      # too, then ships with all its probes disabled (enabled: false) — i.e. it hit
+      # the same wall and opted out of health checking rather than work around it.
+      # We deliberately diverge: a tcpSocket probe keeps a real liveness/readiness
+      # signal. emp/ems/emr use httpGet because their context paths (/WebCore,
+      # /axis2, /WebReports) return a plain 200 without the redirect chain.
       livenessProbe:
         tcpSocket:
           port: http
@@ -298,6 +310,13 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Extra container env vars applied to every component, appended after the
+# component's own env (db, RMI) and before any per-component components.<c>.extraEnv.
+# Each entry is a raw Kubernetes EnvVar (name/value or name/valueFrom). Example:
+#   - name: ENACTOR_LOG_LEVEL
+#     value: DEBUG
+extraEnv: []
 
 storage:
   size: "25Gi"

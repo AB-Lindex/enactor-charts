@@ -1,0 +1,69 @@
+suite: enactor-em pod disruption budgets
+templates:
+  - templates/pdb.yaml
+release:
+  name: em
+  namespace: em
+set:
+  storage.storageClass: test-sc
+  dns.domain: test.example
+tests:
+  - it: renders no PodDisruptionBudget by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a PDB for a component when enabled, defaulting minAvailable to 1
+    set:
+      components.emp.podDisruptionBudget.enabled: true
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: apiVersion
+          value: policy/v1
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: emp
+
+  - it: renders a PDB only for enabled components
+    set:
+      components.emp.podDisruptionBudget.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+
+  - it: maxUnavailable takes precedence over minAvailable
+    set:
+      components.emp.podDisruptionBudget:
+        enabled: true
+        minAvailable: 2
+        maxUnavailable: 1
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - equal:
+          path: spec.maxUnavailable
+          value: 1
+      - notExists:
+          path: spec.minAvailable
+
+  - it: honours an explicit minAvailable
+    set:
+      components.ema.podDisruptionBudget:
+        enabled: true
+        minAvailable: 2
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - equal:
+          path: spec.minAvailable
+          value: 2

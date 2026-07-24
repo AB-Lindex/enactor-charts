@@ -1,0 +1,22 @@
+{{- range $name, $comp := .Values.components }}
+{{- with $comp.podDisruptionBudget }}
+{{- if .enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include (printf "%s.labels" $name) $ | nindent 4 }}
+spec:
+  {{- if .maxUnavailable }}
+  maxUnavailable: {{ .maxUnavailable }}
+  {{- else }}
+  minAvailable: {{ .minAvailable | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include (printf "%s.selectorLabels" $name) $ | nindent 6 }}
+{{- end }}
+{{- end }}
+{{- end }}

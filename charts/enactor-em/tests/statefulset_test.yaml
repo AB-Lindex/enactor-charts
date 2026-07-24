@@ -200,6 +200,73 @@ tests:
           path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
           value: 25Gi
 
+  - it: global extraEnv is applied to every component
+    template: templates/statefulset.yaml
+    set:
+      extraEnv:
+        - name: ENACTOR_LOG_LEVEL
+          value: DEBUG
+    documentSelector:
+      path: metadata.name
+      value: ems
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ENACTOR_LOG_LEVEL
+            value: DEBUG
+
+  - it: components.<c>.extraEnv adds vars to that component only
+    template: templates/statefulset.yaml
+    set:
+      components.emp.extraEnv:
+        - name: EMP_ONLY
+          value: "1"
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: EMP_ONLY
+            value: "1"
+
+  - it: components.<c>.extraEnv does not leak to other components
+    template: templates/statefulset.yaml
+    set:
+      components.emp.extraEnv:
+        - name: EMP_ONLY
+          value: "1"
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: EMP_ONLY
+            value: "1"
+
+  # env: entries override envFrom: sources of the same name (Kubernetes rule),
+  # so an extraEnv override of a configmap key (here config-emp's ENACTOR_MAXTHREADS)
+  # must render into the container env: list to actually take effect.
+  - it: "extraEnv overriding a configmap key lands in env so it wins over envFrom"
+    template: templates/statefulset.yaml
+    set:
+      components.emp.extraEnv:
+        - name: ENACTOR_MAXTHREADS
+          value: "500"
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ENACTOR_MAXTHREADS
+            value: "500"
+
   - it: selector stays on the component name (immutable field must not drift)
     template: templates/statefulset.yaml
     documentSelector:
