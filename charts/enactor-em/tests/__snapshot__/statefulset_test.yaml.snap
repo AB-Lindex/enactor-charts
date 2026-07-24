@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.12
+        helm.sh/chart: enactor-em-0.5.13
       name: ema
     spec:
       replicas: 1
@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 50f2b108d0ec0152b9edc04f2b76783ae4a8a6e5005fc20d9c2f7d8dbab741f1
-            checksum/ema: b6154884c367e46f5d2c974d5b2dd4e87984db2004c52a0dbe9ae6b8125f98c3
+            checksum/common: f087f2e05b269a03c89bfc72b5fc7d1cb6c57a0f0066abe3931bba61b3fb7138
+            checksum/ema: 6c32ca8afd4e57f37bc86fe2d3a1e7993bc88b6f993784127f0bda7e71683e8f
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -112,8 +112,6 @@ matches the rendered snapshot:
           serviceAccountName: ema
           terminationGracePeriodSeconds: 300
       updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
         type: RollingUpdate
       volumeClaimTemplates:
         - metadata:
@@ -134,7 +132,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.12
+        helm.sh/chart: enactor-em-0.5.13
       name: emp
     spec:
       replicas: 1
@@ -146,8 +144,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 50f2b108d0ec0152b9edc04f2b76783ae4a8a6e5005fc20d9c2f7d8dbab741f1
-            checksum/emp: a23f31b6d6c2b9cc32861f33651e305a52e6fef6169473b427320cc5876233cd
+            checksum/common: f087f2e05b269a03c89bfc72b5fc7d1cb6c57a0f0066abe3931bba61b3fb7138
+            checksum/emp: 836e3693f3c0134a8e74f835106388c485e55fc1ce48f1afe919bdb5c8185e2f
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -250,8 +248,6 @@ matches the rendered snapshot:
           serviceAccountName: emp
           terminationGracePeriodSeconds: 300
       updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
         type: RollingUpdate
       volumeClaimTemplates:
         - metadata:
@@ -272,7 +268,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.12
+        helm.sh/chart: enactor-em-0.5.13
       name: emr
     spec:
       replicas: 1
@@ -284,8 +280,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 50f2b108d0ec0152b9edc04f2b76783ae4a8a6e5005fc20d9c2f7d8dbab741f1
-            checksum/emr: 1f85e79249afb8171fc9ccc7cc894725b70e2694c38738ffc7df8913e7de5030
+            checksum/common: f087f2e05b269a03c89bfc72b5fc7d1cb6c57a0f0066abe3931bba61b3fb7138
+            checksum/emr: 57e7b8ab18b2a61305588a62edb7a9a5a0ee30e368a4ef910839e874e5aed454
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -373,8 +369,6 @@ matches the rendered snapshot:
           serviceAccountName: emr
           terminationGracePeriodSeconds: 300
       updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
         type: RollingUpdate
       volumeClaimTemplates:
         - metadata:
@@ -395,7 +389,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.12
+        helm.sh/chart: enactor-em-0.5.13
       name: ems
     spec:
       replicas: 1
@@ -407,8 +401,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 50f2b108d0ec0152b9edc04f2b76783ae4a8a6e5005fc20d9c2f7d8dbab741f1
-            checksum/ems: 051fdd27b1dc120dc7570e13e35ff71b968b91268714e2f398594c9c71646439
+            checksum/common: f087f2e05b269a03c89bfc72b5fc7d1cb6c57a0f0066abe3931bba61b3fb7138
+            checksum/ems: cd31ca4b5527ae00e688e0530c111c761feff621cc5de64e533e852ee29d1cd2
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -496,8 +490,6 @@ matches the rendered snapshot:
           serviceAccountName: ems
           terminationGracePeriodSeconds: 300
       updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
         type: RollingUpdate
       volumeClaimTemplates:
         - metadata:
@@ -518,7 +510,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.12
+        helm.sh/chart: enactor-em-0.5.13
       name: tms
     spec:
       replicas: 1
@@ -530,8 +522,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 50f2b108d0ec0152b9edc04f2b76783ae4a8a6e5005fc20d9c2f7d8dbab741f1
-            checksum/tms: 5669175ca6d0d14aa21a75d7e1b1f1de96168c176533a14ad8096ca91f95790e
+            checksum/common: f087f2e05b269a03c89bfc72b5fc7d1cb6c57a0f0066abe3931bba61b3fb7138
+            checksum/tms: 498da75ce283d079d3406d9a20ae6f8a4a4f8c8391c3cf6f06659d1cc47afb6c
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
@@ -625,8 +617,6 @@ matches the rendered snapshot:
           serviceAccountName: tms
           terminationGracePeriodSeconds: 300
       updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 1
         type: RollingUpdate
       volumeClaimTemplates:
         - metadata:

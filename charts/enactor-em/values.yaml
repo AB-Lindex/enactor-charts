@@ -76,6 +76,12 @@ network:
 #                 component's http port) or a literal {service: <name>, port: <n>}
 #   containerPorts - port names (keyed into network.<component>) to expose as containerPorts
 #   probes      - raw liveness/readiness/startup probe blocks, rendered verbatim
+#   replicas    - StatefulSet replica count; defaults to 1
+#   tag         - image tag for this component; defaults to image.tag (then Chart.AppVersion)
+#   rmiServerHost - literal ENACTOR_RMI_SERVERHOST; defaults to the pod IP (status.podIP)
+#   resources   - container resources block; defaults to the global `resources`
+#   storage     - {size: <n>} for the apphome PVC; defaults to the global `storage.size`
+#                 (PVC size is immutable on existing StatefulSets)
 components:
   ema:
     image: ema

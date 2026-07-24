@@ -19,15 +19,13 @@ metadata:
   labels:
     {{- include (printf "%s.labels" $name) $ | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ $comp.replicas | default 1 }}
   selector:
     matchLabels:
       {{- include (printf "%s.selectorLabels" $name) $ | nindent 6 }}
   serviceName: {{ $name }}
   updateStrategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
   template:
     metadata:
       annotations:
@@ -56,7 +54,7 @@ spec:
         - name: {{ $name }}
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
-          image: "{{ $image }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+          image: "{{ $image }}:{{ $comp.tag | default $.Values.image.tag | default $.Chart.AppVersion }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           env:
             {{ include "db.env" $ | nindent 12 }}
@@ -100,7 +98,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           resources:
-            {{- toYaml $.Values.resources | nindent 12 }}
+            {{- toYaml ($comp.resources | default $.Values.resources) | nindent 12 }}
 
           volumeMounts:
             - name: apphome
@@ -126,5 +124,5 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: {{ $.Values.storage.size }}
+            storage: {{ dig "storage" "size" $.Values.storage.size $comp }}
 {{- end }}

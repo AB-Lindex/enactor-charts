@@ -126,6 +126,80 @@ tests:
               fieldRef:
                 fieldPath: status.podIP
 
+  - it: defaults replicas to 1 when components.<c>.replicas is unset
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  - it: components.<c>.replicas overrides the replica count
+    template: templates/statefulset.yaml
+    set:
+      components.ema.replicas: 3
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+
+  - it: components.<c>.tag overrides the image tag
+    template: templates/statefulset.yaml
+    set:
+      components.ema.tag: "1.2.3"
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ":1\\.2\\.3$"
+
+  - it: components.<c>.resources overrides the global resources block
+    template: templates/statefulset.yaml
+    set:
+      components.emp.resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources
+          value:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+
+  - it: components.<c>.storage.size overrides the apphome PVC size
+    template: templates/statefulset.yaml
+    set:
+      components.emp.storage.size: 50Gi
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 50Gi
+
+  - it: apphome PVC size defaults to storage.size when unset
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: ema
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 25Gi
+
   - it: selector stays on the component name (immutable field must not drift)
     template: templates/statefulset.yaml
     documentSelector:
