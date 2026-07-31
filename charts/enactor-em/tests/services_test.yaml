@@ -38,6 +38,33 @@ tests:
             targetPort: metrics
             protocol: TCP
 
+  - it: merges components.emp.service.extraLabels onto the emp Service
+    set:
+      components.emp.service.extraLabels:
+        team: checkout
+        prometheus.io/scrape: "true"
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - equal:
+          path: metadata.labels.team
+          value: checkout
+      - equal:
+          path: metadata.labels["prometheus.io/scrape"]
+          value: "true"
+
+  - it: does not leak components.emp.service.extraLabels onto other Services
+    set:
+      components.emp.service.extraLabels:
+        team: checkout
+    documentSelector:
+      path: metadata.name
+      value: emr
+    asserts:
+      - isNull:
+          path: metadata.labels.team
+
   - it: matches the rendered snapshot
     asserts:
       - matchSnapshot: {}

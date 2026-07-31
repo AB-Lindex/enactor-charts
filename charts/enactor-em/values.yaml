@@ -130,6 +130,11 @@ components:
     # the pod IP — set when emp's RMI is reached from outside the cluster via a
     # proxy VIP. Defaults to status.podIP when unset.
     # rmiServerHost: "10.0.0.1"
+    # Optional: extra labels merged onto the emp Service only (e.g. for
+    # Prometheus ServiceMonitor selection). Not applied to the StatefulSet/SA.
+    # service:
+    #   extraLabels:
+    #     prometheus.io/scrape: "true"
     dependsOn:
       service: em-db
       port: 3306

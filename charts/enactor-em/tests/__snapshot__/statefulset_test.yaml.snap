@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.16
+        helm.sh/chart: enactor-em-0.5.17
       name: ema
     spec:
       replicas: 1
@@ -20,8 +20,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 61b7cf51f07c0edd2948e52459fe75b1221e7e6ed73dcfb7dbd47e6c099f3c5d
-            checksum/ema: 23b0126f21ebaeb7f4e4d541804657f4dbfcd5d7f78bb0dcc176deadd7c8fb2b
+            checksum/common: 9c09808526f576c2c699d283391f44c775332cb4fb52ae274d40b701dcbf1a44
+            checksum/ema: 962cd4140f4d5d46991c3390630015def766b84637eb4fde994f686fd0ceb55d
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ema
@@ -132,7 +132,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.16
+        helm.sh/chart: enactor-em-0.5.17
       name: emp
     spec:
       replicas: 1
@@ -144,8 +144,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 61b7cf51f07c0edd2948e52459fe75b1221e7e6ed73dcfb7dbd47e6c099f3c5d
-            checksum/emp: a1f8e740c5e63db3ace309dcce4b88ea359ead1a859d6b3f2a03ec5059b6ae3c
+            checksum/common: 9c09808526f576c2c699d283391f44c775332cb4fb52ae274d40b701dcbf1a44
+            checksum/emp: 8cae109354381031d8e7423f885e11db1523b89a6b25a3878f9cdb3b13a873fd
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emp
@@ -271,7 +271,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.16
+        helm.sh/chart: enactor-em-0.5.17
       name: emr
     spec:
       replicas: 1
@@ -283,8 +283,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 61b7cf51f07c0edd2948e52459fe75b1221e7e6ed73dcfb7dbd47e6c099f3c5d
-            checksum/emr: 5e16eb31b5f19363fe38d6e6446296bf1c77f97c25fb6acea6a2817d14b1c569
+            checksum/common: 9c09808526f576c2c699d283391f44c775332cb4fb52ae274d40b701dcbf1a44
+            checksum/emr: 5fc89893839827c0c5d93c2bb8b57af85371567fb3e654baf32a93115fbb30f5
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: emr
@@ -392,7 +392,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.16
+        helm.sh/chart: enactor-em-0.5.17
       name: ems
     spec:
       replicas: 1
@@ -404,8 +404,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 61b7cf51f07c0edd2948e52459fe75b1221e7e6ed73dcfb7dbd47e6c099f3c5d
-            checksum/ems: 51e002756ce8a163385d4544ebd87b9211a91bf9560a7f8663d88df2df3f71e4
+            checksum/common: 9c09808526f576c2c699d283391f44c775332cb4fb52ae274d40b701dcbf1a44
+            checksum/ems: 434e29d327c09eeb54a1cc8c6519597d09fa75591822edf4cf7f33037cc42b60
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: ems
@@ -513,7 +513,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.16
+        helm.sh/chart: enactor-em-0.5.17
       name: tms
     spec:
       replicas: 1
@@ -525,8 +525,8 @@ matches the rendered snapshot:
       template:
         metadata:
           annotations:
-            checksum/common: 61b7cf51f07c0edd2948e52459fe75b1221e7e6ed73dcfb7dbd47e6c099f3c5d
-            checksum/tms: 24253a605ec58d7ee55f78e2a24bbf0455de88396c8340fcf9f68c5451b4dabe
+            checksum/common: 9c09808526f576c2c699d283391f44c775332cb4fb52ae274d40b701dcbf1a44
+            checksum/tms: 50479b2a4e5bfa47e09eb19655da8942a9bbe71f7d58b68a3831e5b113454f21
           labels:
             app.kubernetes.io/instance: em
             app.kubernetes.io/name: tms
