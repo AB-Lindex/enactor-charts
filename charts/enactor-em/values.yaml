@@ -57,6 +57,8 @@ network:
     jmx2: 39849
     jmx3: 39850
     jmx4: 39851
+    # EMP's built-in Prometheus metrics endpoint (:9400/metrics inside the pod).
+    metrics: 9400
   ems:
     http: 39833
   tms:
@@ -142,6 +144,7 @@ components:
       - jmx2
       - jmx3
       - jmx4
+      - metrics
     probes:
       livenessProbe:
         httpGet:
@@ -284,6 +287,14 @@ ingress:
     paths:
       - /WebCore
     annotations: {}
+    # Exposes EMP's Prometheus metrics endpoint (:9400/metrics inside the pod).
+    # Renders into the same Ingress object as WebCore above (shares
+    # ingress.emp.annotations), routed to a separate "metrics" service port.
+    # Independently toggleable from WebCore via metrics.enabled.
+    metrics:
+      enabled: true
+      paths:
+        - /metrics
   tms:
     # Exposes the TMS WebTerminalManager UI
     enabled: true

@@ -1,0 +1,70 @@
+suite: enactor-em emp ingress
+templates:
+  - templates/ingress-emp.yaml
+release:
+  name: em
+  namespace: em
+set:
+  dns.domain: test.example
+tests:
+  - it: routes /WebCore to the http service port
+    asserts:
+      - contains:
+          path: spec.rules[0].http.paths
+          content:
+            path: /WebCore
+            pathType: Prefix
+            backend:
+              service:
+                name: emp
+                port:
+                  name: http
+
+  - it: routes /metrics to the metrics service port
+    asserts:
+      - contains:
+          path: spec.rules[0].http.paths
+          content:
+            path: /metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: emp
+                port:
+                  name: metrics
+
+  - it: renders when only metrics is enabled and WebCore is disabled
+    set:
+      ingress.emp.enabled: false
+      ingress.emp.metrics.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - notContains:
+          path: spec.rules[0].http.paths
+          content:
+            path: /WebCore
+            pathType: Prefix
+            backend:
+              service:
+                name: emp
+                port:
+                  name: http
+      - contains:
+          path: spec.rules[0].http.paths
+          content:
+            path: /metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: emp
+                port:
+                  name: metrics
+
+  - it: does not render when both WebCore and metrics are disabled
+    set:
+      ingress.emp.enabled: false
+      ingress.emp.metrics.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

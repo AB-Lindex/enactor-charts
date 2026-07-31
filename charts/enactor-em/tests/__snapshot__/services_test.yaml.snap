@@ -8,7 +8,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ema
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.15
+        helm.sh/chart: enactor-em-0.5.16
       name: ema
     spec:
       ports:
@@ -29,7 +29,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emp
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.15
+        helm.sh/chart: enactor-em-0.5.16
       name: emp
     spec:
       ports:
@@ -57,6 +57,10 @@ matches the rendered snapshot:
           port: 39851
           protocol: TCP
           targetPort: jmx4
+        - name: metrics
+          port: 9400
+          protocol: TCP
+          targetPort: metrics
       selector:
         app.kubernetes.io/instance: em
         app.kubernetes.io/name: emp
@@ -70,7 +74,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: emr
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.15
+        helm.sh/chart: enactor-em-0.5.16
       name: emr
     spec:
       ports:
@@ -91,7 +95,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: ems
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.15
+        helm.sh/chart: enactor-em-0.5.16
       name: ems
     spec:
       ports:
@@ -112,7 +116,7 @@ matches the rendered snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: tms
         app.kubernetes.io/version: "1.0"
-        helm.sh/chart: enactor-em-0.5.15
+        helm.sh/chart: enactor-em-0.5.16
       name: tms
     spec:
       ports:
