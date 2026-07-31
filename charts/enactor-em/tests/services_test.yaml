@@ -25,6 +25,19 @@ tests:
             targetPort: jmx4
             protocol: TCP
 
+  - it: emp Service exposes the metrics port from network.emp
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.ports
+          content:
+            name: metrics
+            port: 9400
+            targetPort: metrics
+            protocol: TCP
+
   - it: matches the rendered snapshot
     asserts:
       - matchSnapshot: {}

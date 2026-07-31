@@ -197,6 +197,9 @@ matches the rendered snapshot:
                 - containerPort: 39851
                   name: jmx4
                   protocol: TCP
+                - containerPort: 9400
+                  name: metrics
+                  protocol: TCP
               readinessProbe:
                 httpGet:
                   path: /WebCore/

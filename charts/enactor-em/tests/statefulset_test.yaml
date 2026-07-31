@@ -74,6 +74,19 @@ tests:
             name: PORT
             value: "3306"
 
+  - it: emp exposes the metrics container port
+    template: templates/statefulset.yaml
+    documentSelector:
+      path: metadata.name
+      value: emp
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: metrics
+            containerPort: 9400
+            protocol: TCP
+
   - it: ema waits on emp before starting
     template: templates/statefulset.yaml
     documentSelector:
