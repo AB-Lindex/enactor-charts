@@ -334,7 +334,7 @@ extraEnv: []
 
 storage:
   size: "25Gi"
-  storageClass: ""
+  storageClass: rwo-filesystem
 
 # Additional raw manifests to render as-is (e.g. per-environment SealedSecrets
 # for em-secrets / secret-common). See templates/extra-manifests.yaml.
@@ -355,7 +355,7 @@ mariadb:
   primary:
     persistence:
       size: "25Gi"
-      storageClass: ""
+      storageClass: rwo-filesystem
     configuration: |
       [mysqld]
       skip-name-resolve
