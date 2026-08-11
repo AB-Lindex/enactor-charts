@@ -61,17 +61,35 @@ spec:
 
       initContainers:
         - name: verifydb
-          image: busybox:1.31
-          command: 
+          image: busybox:1.38.0
+          command:
             - 'sh'
             - '-c'
             - |-
-              echo -e "Checking for the availability of MySQL Server deployment '$SERVERNAME'";
-              while ! nc -z $SERVERNAME 3306;
-                do sleep 2;
-                printf "-";
-              done;
-              echo -e "  >> MySQL DB Server '$SERVERNAME' has started";
+              set -u
+              TIMEOUT_SECONDS=300
+              SLEEP_SECONDS=2
+              START=$(date +%s)
+              ATTEMPT=0
+              echo "$(date -u +%FT%TZ) Waiting for MySQL server '$SERVERNAME:3306' (timeout ${TIMEOUT_SECONDS}s)"
+              while true; do
+                ATTEMPT=$((ATTEMPT+1))
+                ELAPSED=$(( $(date +%s) - START ))
+                if [ "$ELAPSED" -ge "$TIMEOUT_SECONDS" ]; then
+                  echo "$(date -u +%FT%TZ) FAILED after ${ELAPSED}s (${ATTEMPT} attempts): giving up on '$SERVERNAME:3306'"
+                  exit 1
+                fi
+                if ! nslookup "$SERVERNAME" >/dev/null 2>&1; then
+                  echo "$(date -u +%FT%TZ) attempt ${ATTEMPT}: DNS resolution failed for '$SERVERNAME'"
+                  sleep "$SLEEP_SECONDS"; continue
+                fi
+                if ! nc -z "$SERVERNAME" 3306 >/dev/null 2>&1; then
+                  echo "$(date -u +%FT%TZ) attempt ${ATTEMPT}: DNS OK, TCP connect to '$SERVERNAME:3306' failed"
+                  sleep "$SLEEP_SECONDS"; continue
+                fi
+                echo "$(date -u +%FT%TZ) MySQL DB Server '$SERVERNAME' reachable after ${ATTEMPT} attempt(s), ${ELAPSED}s"
+                exit 0
+              done
           env:
             - name: SERVERNAME
               value: {{ template "dbserver" $root }}
