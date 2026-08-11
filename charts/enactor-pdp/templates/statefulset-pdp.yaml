@@ -79,12 +79,8 @@ spec:
                   echo "$(date -u +%FT%TZ) FAILED after ${ELAPSED}s (${ATTEMPT} attempts): giving up on '$SERVERNAME:3306'"
                   exit 1
                 fi
-                if ! nslookup "$SERVERNAME" >/dev/null 2>&1; then
-                  echo "$(date -u +%FT%TZ) attempt ${ATTEMPT}: DNS resolution failed for '$SERVERNAME'"
-                  sleep "$SLEEP_SECONDS"; continue
-                fi
                 if ! nc -z "$SERVERNAME" 3306 >/dev/null 2>&1; then
-                  echo "$(date -u +%FT%TZ) attempt ${ATTEMPT}: DNS OK, TCP connect to '$SERVERNAME:3306' failed"
+                  echo "$(date -u +%FT%TZ) attempt ${ATTEMPT}: TCP connect to '$SERVERNAME:3306' failed"
                   sleep "$SLEEP_SECONDS"; continue
                 fi
                 echo "$(date -u +%FT%TZ) MySQL DB Server '$SERVERNAME' reachable after ${ATTEMPT} attempt(s), ${ELAPSED}s"
