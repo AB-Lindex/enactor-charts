@@ -247,11 +247,12 @@ mariadb:
       transaction_isolation = READ-COMMITTED
       lower_case_table_names = 1
 
-      innodb_buffer_pool_size = 512M
+      innodb_buffer_pool_size = 384M
       innodb_log_file_size = 256M
       innodb_flush_method = O_DIRECT
       innodb_io_capacity = 1000
       innodb_io_capacity_max = 2000
+      innodb_flush_log_at_trx_commit = 2
 
       [client]
       port=3306
